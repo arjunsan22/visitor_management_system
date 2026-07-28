@@ -1,3 +1,4 @@
+//generateTokens.js
 import jwt from "jsonwebtoken";
 
 export const generateTokens = (admin) => {

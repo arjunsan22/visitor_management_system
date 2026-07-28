@@ -5,38 +5,39 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const protect = asyncHandler(async (req, res, next) => {
+  const token = req.cookies.accessToken;
 
-    const token = req.cookies.accessToken;
+  if (!token) {
+    throw new ApiError(401, "Please login first");
+  }
 
-    if (!token) {
-        throw new ApiError(401, "Please login first");
-    }
+  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    const decoded = jwt.verify(
-        token,
-        process.env.ACCESS_TOKEN_SECRET
-    );
+  const admin = await findById(decoded.id);
 
-    const admin = await findById(decoded.id);
+  if (!admin) {
+    throw new ApiError(401, "User not found");
+  }
 
-    if (!admin) {
-        throw new ApiError(401, "User not found");
-    }
+  delete admin.password;
 
-    delete admin.password;
+  req.user = admin;
 
-    req.user = admin;
-
-    next();
-
+  next();
 });
 
 export const adminOnly = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    throw new ApiError(403, "Access denied");
+  }
 
-    if (req.user.role !== "admin") {
-        throw new ApiError(403, "Access denied");
-    }
+  next();
+};
 
-    next();
+export const securityOnly = (req, res, next) => {
+  if (req.user.role !== "security") {
+    throw new ApiError(403, "Only security can verify visitors");
+  }
 
+  next();
 };

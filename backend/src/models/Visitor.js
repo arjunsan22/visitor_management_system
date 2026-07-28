@@ -48,4 +48,24 @@ export const findByPassToken = async (pass_token) => {
   );
 
   return rows[0];
+
+};
+
+export const verifyVisitor = async (pass_token, verified_by) => {
+
+    const [result] = await pool.execute(
+        `UPDATE visitors
+         SET
+            status = ?,
+            verified_by = ?,
+            verified_at = NOW()
+         WHERE pass_token = ?`,
+        [
+            "Verified",
+            verified_by,
+            pass_token
+        ]
+    );
+
+    return result;
 };
