@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const protect = asyncHandler(async (req, res, next) => {
-  const token = req.cookies.accessToken;
+  const token = req.cookies.accessToken || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
     throw new ApiError(401, "Please login first");
