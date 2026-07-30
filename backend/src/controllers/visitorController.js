@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { createVisitor, findByPassToken, verifyVisitor } from "../models/Visitor.js";
+import { createVisitor, findByPassToken, verifyVisitor, checkoutVisitor } from "../models/Visitor.js";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -84,5 +84,37 @@ return res.status(200).json(
         "Visitor verified successfully"
     )
 );
+
+});
+
+export const checkoutVisitorPass = asyncHandler(async (req, res) => {
+
+    const { token } = req.params;
+    const { check_out_at } = req.body;
+
+    const visitor = await findByPassToken(token);
+    if (visitor.status !== "Verified") {
+    throw new ApiError(
+        400,
+        "Visitor must be verified before checkout"
+    );
+}
+
+    if (!visitor) {
+        throw new ApiError(404, "Visitor not found");
+    }
+
+    await checkoutVisitor(
+        token,
+        check_out_at
+    );
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Visitor checked out successfully"
+        )
+    );
 
 });

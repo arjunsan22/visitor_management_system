@@ -66,6 +66,19 @@ export const verifyVisitor = async (pass_token, verified_by) => {
             pass_token
         ]
     );
+    return result;
+};
+////////checkout/////////////////////////
+export const checkoutVisitor = async ( pass_token,check_out_at ) => {
+
+    const [result] = await pool.execute(
+        `UPDATE visitors
+        SET
+            check_out_at = ?,
+            status = 'Checked Out'
+        WHERE pass_token = ?`,
+        [check_out_at, pass_token]
+    );
 
     return result;
 };

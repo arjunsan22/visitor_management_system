@@ -1,10 +1,9 @@
 import express from "express";
-
 import validate from "../middleware/validate.js";
 
 import { visitorSchema } from "../schemas/visitorSchema.js";
-
-import { createVisitorPass,getVisitorPass,verifyVisitorPass } from "../controllers/visitorController.js";
+import { checkoutSchema } from "../schemas/checkoutSchema.js";
+import { createVisitorPass,getVisitorPass,verifyVisitorPass,checkoutVisitorPass } from "../controllers/visitorController.js";
 import { protect,securityOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -21,6 +20,14 @@ router.patch("/:token/verify",
     protect,
     securityOnly,
     verifyVisitorPass
+);
+
+
+router.patch("/:token/checkout",
+    protect,
+    securityOnly,
+    validate(checkoutSchema),
+    checkoutVisitorPass
 );
 
 export default router;
