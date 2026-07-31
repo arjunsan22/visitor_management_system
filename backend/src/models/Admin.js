@@ -32,4 +32,36 @@ export const createAdmin = async({
     [name,email,phone,password,role]
     );
     return result.insertId;
+
+};
+
+/////\\\\\ Dashboard //////\\\\\\
+export const getDashboardStats = async () => {
+
+    const [rows] = await pool.execute(`
+        SELECT
+            COUNT(*) AS totalVisitors,
+
+            SUM(CASE
+                WHEN status = 'Pending'
+                THEN 1
+                ELSE 0
+            END) AS pendingVisitors,
+
+            SUM(CASE
+                WHEN status = 'Verified'
+                THEN 1
+                ELSE 0
+            END) AS verifiedVisitors,
+
+            SUM(CASE
+                WHEN status = 'Checked Out'
+                THEN 1
+                ELSE 0
+            END) AS checkedOutVisitors
+
+        FROM visitors
+    `);
+
+    return rows[0];
 };

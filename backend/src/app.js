@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import authRoutes from './routes/authRoutes.js'
 import errorMiddleware from './middleware/errorMiddleware.js';
 import visitorRoutes from './routes/visitorRoutes.js'
-
+import adminRoutes from "./routes/adminRoutes.js";
 const app = express();
 
 //cors 
@@ -24,6 +24,8 @@ app.use(cookieParser());
 //routes
 app.use("/api/auth",authRoutes);
 app.use("/api/visitors", visitorRoutes);
+app.use("/api/admin", adminRoutes);
+
 //testing
 
 app.get('/',(req,res)=>{
