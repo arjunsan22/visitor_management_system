@@ -11,6 +11,4 @@ router.get("/visitors",protect,adminOnly,getVisitors);
 
 router.post("/security",protect,adminOnly,validate(securitySchema),createSecurity);
 
-
-
 export default router;

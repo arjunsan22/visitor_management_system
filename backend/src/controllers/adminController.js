@@ -1,3 +1,4 @@
+
 import { getDashboardStats } from "../models/Admin.js";
 import { getVisitors as getVisitorsModel } from "../models/Visitor.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -7,9 +8,9 @@ import {findSecurityByEmail, createSecurity as createSecurityModel} from "../mod
 
 export const dashboardStats = asyncHandler(async (req, res) => {
 
-    const stats = await getDashboardStats();
+const stats = await getDashboardStats();
 
-    return res.status(200).json(
+return res.status(200).json(
         new ApiResponse(
             200,
             stats,
@@ -20,7 +21,7 @@ export const dashboardStats = asyncHandler(async (req, res) => {
 });
 
 
-//////\\\\\\\\visitors search filtering sorting pagination///\\\\\\\
+//////\\\\\\\\visitors search filtering sorting pagination///\\\\\\
 export const getVisitors = asyncHandler(async (req, res) => {
 
     const {
