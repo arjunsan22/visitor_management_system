@@ -2,6 +2,8 @@ import { getDashboardStats } from "../models/Admin.js";
 import { getVisitors as getVisitorsModel } from "../models/Visitor.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import bcrypt from "bcrypt";
+import {findSecurityByEmail, createSecurity as createSecurityModel} from "../models/Admin.js";
 
 export const dashboardStats = asyncHandler(async (req, res) => {
 
@@ -44,6 +46,45 @@ export const getVisitors = asyncHandler(async (req, res) => {
             200,
             visitors,
             "Visitors fetched successfully"
+        )
+    );
+
+});
+
+////\\\\ security creating ////\\\\
+
+export const createSecurity = asyncHandler(async (req, res) => {
+
+    const { name, email, phone, password } = req.body;
+
+    const existingSecurity = await findSecurityByEmail(email);
+
+    if (existingSecurity) {
+        throw new ApiError(
+            409,
+            "Security already exists with this email"
+        );
+    }
+
+    const hashedPassword = await bcrypt.hash(
+        password,
+        10
+    );
+
+    const securityId = await createSecurityModel({
+        name,
+        email,
+        phone,
+        password: hashedPassword,
+    });
+
+    return res.status(201).json(
+        new ApiResponse(
+            201,
+            {
+                id: securityId,
+            },
+            "Security created successfully"
         )
     );
 

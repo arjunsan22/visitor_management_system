@@ -11,8 +11,14 @@ export const protect = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "Please login first");
   }
 
-  const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+  try {
+      
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
+  } catch (error) {
+    throw new ApiError(401, "Access token expired. Please login again.");
+  }
+  
   const admin = await findById(decoded.id);
 
   if (!admin) {

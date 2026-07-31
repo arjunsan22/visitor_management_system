@@ -65,3 +65,53 @@ export const getDashboardStats = async () => {
 
     return rows[0];
 };
+
+
+///\\\\ security ////\\\\
+
+export const findSecurityByEmail = async (email) => {
+
+    const [rows] = await pool.execute(
+        `
+        SELECT *
+        FROM admin
+        WHERE email = ?
+        AND role = 'security'
+        `,
+        [email]
+    );
+
+    return rows[0];
+};
+
+
+export const createSecurity = async ({
+    name,
+    email,
+    phone,
+    password,
+}) => {
+
+    const [result] = await pool.execute(
+        `
+        INSERT INTO admin
+        (
+            name,
+            email,
+            phone,
+            password,
+            role
+        )
+        VALUES (?, ?, ?, ?, ?)
+        `,
+        [
+            name,
+            email,
+            phone,
+            password,
+            "security",
+        ]
+    );
+
+    return result.insertId;
+};
