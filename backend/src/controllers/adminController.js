@@ -1,5 +1,5 @@
 
-import { getDashboardStats } from "../models/Admin.js";
+import { getDashboardStats, getAllSecurity as getAllSecurityModel} from "../models/Admin.js";
 import { getVisitors as getVisitorsModel } from "../models/Visitor.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -87,6 +87,19 @@ export const createSecurity = asyncHandler(async (req, res) => {
                 id: securityId,
             },
             "Security created successfully"
+        )
+    );
+});
+
+export const getAllSecurity = asyncHandler(async (req, res) => {
+
+    const securityList = await getAllSecurityModel();
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            securityList,
+            "Security list fetched successfully"
         )
     );
 

@@ -115,3 +115,23 @@ export const createSecurity = async ({
 
     return result.insertId;
 };
+
+
+export const getAllSecurity = async () => {
+
+const [rows] = await pool.execute(
+        `
+        SELECT
+            id,
+            name,
+            email,
+            phone,
+            created_at
+        FROM admin
+        WHERE role = 'security'
+        ORDER BY created_at DESC
+        `
+    );
+
+    return rows;
+};
