@@ -135,3 +135,72 @@ const [rows] = await pool.execute(
 
     return rows;
 };
+
+
+export const findSecurityById = async (id) => {
+
+    const [rows] = await pool.execute(
+        `
+        SELECT
+            id,
+            name,
+            email,
+            phone,
+            role
+        FROM admin
+        WHERE id = ?
+        AND role = 'security'
+        `,
+        [id]
+    );
+
+    return rows[0];
+
+};
+
+
+export const updateSecurity = async ({
+    id,
+    name,
+    email,
+    phone,
+}) => {
+
+    const [result] = await pool.execute(
+        `
+        UPDATE admin
+        SET
+            name = ?,
+            email = ?,
+            phone = ?
+        WHERE id = ?
+        AND role = 'security'
+        `,
+        [
+            name,
+            email,
+            phone,
+            id,
+        ]
+    );
+
+    return result.affectedRows;
+
+};
+
+// checking in editing time security using same email, so no dup mail error comes
+export const findSecurityByEmailExceptId = async (email, id) => {
+
+    const [rows] = await pool.execute(
+        `
+        SELECT *
+        FROM admin
+        WHERE email = ?
+        AND role = 'security'
+        AND id != ?
+        `,
+        [email, id]
+    );
+
+    return rows[0];
+};

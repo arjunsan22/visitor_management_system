@@ -1,11 +1,11 @@
-
 import { getDashboardStats, getAllSecurity as getAllSecurityModel} from "../models/Admin.js";
 import { getVisitors as getVisitorsModel } from "../models/Visitor.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import bcrypt from "bcrypt";
-import {findSecurityByEmail, createSecurity as createSecurityModel} from "../models/Admin.js";
+import {findSecurityByEmail, createSecurity as createSecurityModel, 
+    findSecurityById,updateSecurity as updateSecurityModel,findSecurityByEmailExceptId} from "../models/Admin.js";
 
 export const dashboardStats = asyncHandler(async (req, res) => {
 
@@ -100,6 +100,55 @@ export const getAllSecurity = asyncHandler(async (req, res) => {
             200,
             securityList,
             "Security list fetched successfully"
+        )
+    );
+
+});
+
+export const updateSecurity = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+
+    const {
+        name,
+        email,
+        phone,
+    } = req.body;
+
+    const security = await findSecurityById(id);
+
+    if (!security) {
+        throw new ApiError(
+            404,
+            "Security not found"
+        );
+    }
+
+    // Check dup mails /////excluding current secu//
+    const existingSecurity = await findSecurityByEmailExceptId(
+        email,
+        id
+    );
+
+    if (existingSecurity) {
+        throw new ApiError(
+            409,
+            "Security already exists with this email"
+        );
+    }
+
+    await updateSecurityModel({
+        id,
+        name,
+        email,
+        phone,
+    });
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Security updated successfully"
         )
     );
 
