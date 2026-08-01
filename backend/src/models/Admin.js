@@ -204,3 +204,17 @@ export const findSecurityByEmailExceptId = async (email, id) => {
 
     return rows[0];
 };
+
+export const deleteSecurity = async (id) => {
+
+    const [result] = await pool.execute(
+        `
+        DELETE FROM admin
+        WHERE id = ?
+        AND role = 'security'
+        `,
+        [id]
+    );
+
+    return result.affectedRows;
+};

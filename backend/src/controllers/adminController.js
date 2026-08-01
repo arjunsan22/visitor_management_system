@@ -1,4 +1,4 @@
-import { getDashboardStats, getAllSecurity as getAllSecurityModel} from "../models/Admin.js";
+import { getDashboardStats, getAllSecurity as getAllSecurityModel,  deleteSecurity as deleteSecurityModel} from "../models/Admin.js";
 import { getVisitors as getVisitorsModel } from "../models/Visitor.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -149,6 +149,32 @@ export const updateSecurity = asyncHandler(async (req, res) => {
             200,
             {},
             "Security updated successfully"
+        )
+    );
+
+});
+
+
+export const deleteSecurity = asyncHandler(async (req, res) => {
+
+    const { id } = req.params;
+
+    const security = await findSecurityById(id);
+
+    if (!security) {
+        throw new ApiError(
+            404,
+            "Security not found"
+        );
+    }
+
+    await deleteSecurityModel(id);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {},
+            "Security deleted successfully"
         )
     );
 
