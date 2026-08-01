@@ -3,6 +3,7 @@ import { getDashboardStats } from "../models/Admin.js";
 import { getVisitors as getVisitorsModel } from "../models/Visitor.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { ApiError } from "../utils/ApiError.js";
 import bcrypt from "bcrypt";
 import {findSecurityByEmail, createSecurity as createSecurityModel} from "../models/Admin.js";
 
