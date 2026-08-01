@@ -41,17 +41,26 @@ export const createVisitor = async ({
 
   return result.insertId;
 };
-
+/////////////////////////////////
 export const findByPassToken = async (pass_token) => {
-  const [rows] = await pool.execute(
-    `SELECT * FROM visitors WHERE pass_token = ?`,
-    [pass_token],
-  );
 
-  return rows[0];
+    const [rows] = await pool.execute(
+        `
+        SELECT
+            visitors.*,
+            admin.name AS verified_by_name
+        FROM visitors
+        LEFT JOIN admin
+            ON visitors.verified_by = admin.id
+        WHERE visitors.pass_token = ?
+        `,
+        [pass_token]
+    );
+
+    return rows[0];
 
 };
-
+///////////////////////////////////////////////////////////////
 export const verifyVisitor = async (pass_token, verified_by) => {
 
     const [result] = await pool.execute(

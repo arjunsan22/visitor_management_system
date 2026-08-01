@@ -41,7 +41,7 @@ export const createVisitorPass = asyncHandler(async (req, res) => {
     ),
   );
 });
-
+///////////////////////
 export const getVisitorPass = asyncHandler(async (req, res) => {
   const { token } = req.params;
 
@@ -51,12 +51,29 @@ export const getVisitorPass = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Visitor pass not found");
   }
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, visitor, "Visitor pass fetched successfully"));
+ return res.status(200).json(
+    new ApiResponse(
+        200,
+        {
+            name: visitor.name,
+            email: visitor.email,
+            phone: visitor.phone,
+            purpose: visitor.purpose,
+            person_to_visit: visitor.person_to_visit,
+            department: visitor.department,
+            visit_date: visitor.visit_date,
+            check_in_time: visitor.check_in_time,
+            status: visitor.status,
+            verified_by: visitor.verified_by_name,
+            verified_at: visitor.verified_at,
+            check_out: visitor.check_out,
+        },
+        "Visitor pass fetched successfully"
+    )
+);
 });
 
-
+/////////////////////////
 export const verifyVisitorPass = asyncHandler(async (req, res) => {
 
     const { token } = req.params;
