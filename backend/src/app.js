@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js'
 import errorMiddleware from './middleware/errorMiddleware.js';
 import visitorRoutes from './routes/visitorRoutes.js'
 import adminRoutes from "./routes/adminRoutes.js";
+import securityRoutes from "./routes/securityRoutes.js";
 const app = express();
 
 //cors 
@@ -25,7 +26,7 @@ app.use(cookieParser());
 app.use("/api/auth",authRoutes);
 app.use("/api/visitors", visitorRoutes);
 app.use("/api/admin", adminRoutes);
-
+app.use("/api/security",securityRoutes);
 //testing
 
 app.get('/',(req,res)=>{
