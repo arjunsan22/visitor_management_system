@@ -104,13 +104,18 @@ const admin = await findById(decoded.id);
         );
     }
 
-    const { accessToken } = generateTokens(admin);
+const {accessToken, refreshToken: newRefreshToken } = generateTokens(admin);
 
     res.cookie(
         "accessToken",
         accessToken,
         accessCookieOptions
     );
+    res.cookie(
+    "refreshToken",
+    newRefreshToken,
+    refreshCookieOptions
+);
 
     return res.status(200).json(
         new ApiResponse(
@@ -119,5 +124,4 @@ const admin = await findById(decoded.id);
             "Access token refreshed successfully"
         )
     );
-
 });
