@@ -1,64 +1,84 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/auth/Login";
+import { Login } from "../pages/auth/Login";
 
-import Dashboard from "../pages/admin/Dashboard";
-import Visitors from "../pages/admin/Visitors";
-import SecurityManagement from "../pages/admin/SecurityManagement";
+import { Dashboard } from "../pages/admin/Dashboard";
+import { Visitors } from "../pages/admin/Visitors";
+import { SecurityManagement } from "../pages/admin/SecurityManagement";
 
-import SecurityDashboard from "../pages/security/SecurityDashboard";
-import Scanner from "../pages/security/Scanner";
-import VisitorDetails from "../pages/security/VisitorDetails";
+import { SecurityDashboard } from "../pages/security/SecurityDashboard";
+import { Scanner } from "../pages/security/Scanner";
+import { VisitorDetails } from "../pages/security/VisitorDetails";
 
-import VisitorPass from "../pages/visitor/VisitorPass";
+import { VisitorPass } from "../pages/visitor/VisitorPass";
+
+import { AdminLayout } from "../layouts/AdminLayout";
+import { SecurityLayout } from "../layouts/SecurityLayout";
+import { PublicLayout } from "../layouts/PublicLayout";
 
 const AppRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
+                <Route element={<PublicLayout />}>
 
-                {/* Auth */}
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
+                    <Route
+                        path="/login"
+                        element={<Login />}
+                    />
+
+                    <Route
+                        path="/pass/:token"
+                        element={<VisitorPass />}
+                    />
+
+                </Route>
 
                 {/* Admin */}
                 <Route
-                    path="/admin/dashboard"
-                    element={<Dashboard />}
-                />
+                    path="/admin"
+                    element={<AdminLayout />}
+                >
 
-                <Route
-                    path="/admin/visitors"
-                    element={<Visitors />}
-                />
+                    <Route
+                        path="dashboard"
+                        element={<Dashboard />}
+                    />
 
-                <Route
-                    path="/admin/security"
-                    element={<SecurityManagement />}
-                />
+                    <Route
+                        path="visitors"
+                        element={<Visitors />}
+                    />
+
+                    <Route
+                        path="security"
+                        element={<SecurityManagement />}
+                    />
+
+                </Route>
 
                 {/* Security */}
                 <Route
-                    path="/security/dashboard"
-                    element={<SecurityDashboard />}
-                />
+                    path="/security"
+                    element={<SecurityLayout />}
+                >
 
-                <Route
-                    path="/security/scanner"
-                    element={<Scanner />}
-                />
+                    <Route
+                        path="dashboard"
+                        element={<SecurityDashboard />}
+                    />
 
-                <Route
-                    path="/security/visitor/:token"
-                    element={<VisitorDetails />}
-                />
+                    <Route
+                        path="scanner"
+                        element={<Scanner />}
+                    />
 
-                {/* Visitor */}
-                <Route
-                    path="/pass/:token"
-                    element={<VisitorPass />}
-                />
+                    <Route
+                        path="visitor/:token"
+                        element={<VisitorDetails />}
+                    />
+
+                </Route>
+
             </Routes>
         </BrowserRouter>
     );
