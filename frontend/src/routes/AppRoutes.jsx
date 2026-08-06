@@ -8,7 +8,7 @@ import { SecurityManagement } from "../pages/admin/SecurityManagement";
 import { SecurityDashboard } from "../pages/security/SecurityDashboard";
 import { Scanner } from "../pages/security/Scanner";
 import { VisitorDetails } from "../pages/security/VisitorDetails";
-
+import { Home } from "../pages/visitor/Home";// '/' main home route
 import { VisitorPass } from "../pages/visitor/VisitorPass";
 
 import { AdminLayout } from "../layouts/AdminLayout";
@@ -20,6 +20,11 @@ const AppRoutes = () => {
         <BrowserRouter>
             <Routes>
                 <Route element={<PublicLayout />}>
+
+                    <Route
+                        path="/"
+                        element={<Home />}
+                    />
 
                     <Route
                         path="/login"
