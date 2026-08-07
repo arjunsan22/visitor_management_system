@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'Nagaiya-Thin';
+  src: url('/fonts/Nagaiya-Thin.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@theme {
+  --font-nagaiya: 'Nagaiya-Thin', sans-serif;
+}

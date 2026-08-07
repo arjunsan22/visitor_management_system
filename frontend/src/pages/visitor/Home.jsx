@@ -1,5 +1,5 @@
-
 import { Header } from "../../components/visitor/Header";
+import { HeroSection } from "../../components/visitor/HeroSection";
 
 export const Home = () => {
     return (
@@ -9,9 +9,7 @@ export const Home = () => {
 
             <main className="mx-auto flex max-w-7xl items-center justify-center px-6 py-20">
 
-                <h1 className="text-4xl font-bold">
-                    Visitor Home
-                </h1>
+                <HeroSection />
 
             </main>
 

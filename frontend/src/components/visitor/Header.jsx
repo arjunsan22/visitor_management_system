@@ -5,7 +5,7 @@ export const Header = () => {
 
                 {/* Left Side: Logos & VMS Title */}
                 <div className="flex items-center gap-3 sm:gap-5">
-                    
+
                     {/* Mobile View: VMS Logo (vms-logo.png) comes BEFORE the NIT Logo */}
                     {/* <img
                         src="/vms-logo.png"
@@ -27,11 +27,11 @@ export const Header = () => {
                         className="hidden w-auto object-contain sm:block sm:h-14 md:h-16"
                     />
 
-<div className="hidden sm:block h-8 w-[1px] bg-gray-300"></div>
+                    <div className="hidden sm:block h-8 w-[1px] bg-gray-300"></div>
                     <div className="flex flex-col text-left">
                         <div className="flex items-center gap-2">
                             <span className="hidden sm:inline-block h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
-                           <h1 className="hidden sm:inline text-sm font-bold text-white sm:text-xl md:text-2xl sm:text-gray-900 font-flaviotte">
+                            <h1 className="hidden sm:inline text-sm font-bold  text-white sm:text-xl md:text-2xl sm:text-gray-900 font-nagaiya">
                                 Visitor Management System
                             </h1>
                         </div>
