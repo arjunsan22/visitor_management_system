@@ -1,17 +1,18 @@
 import { Header } from "../../components/visitor/Header";
 import { HeroSection } from "../../components/visitor/HeroSection";
+import { Footer } from "../../components/visitor/footer";
 
 export const Home = () => {
     return (
-        <div className="min-h-screen bg-slate-100">
+        <div className="flex flex-col min-h-screen bbg-slate-100">
 
             <Header />
 
-            <main className="mx-auto flex max-w-7xl items-center justify-center px-6 py-20">
-
+            <main className="flex flex-1 w-full items-center justify-center px-4 sm:px-6 py-12">
                 <HeroSection />
-
             </main>
+
+            <Footer />
 
         </div>
     );

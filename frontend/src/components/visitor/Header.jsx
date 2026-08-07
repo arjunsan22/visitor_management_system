@@ -1,6 +1,6 @@
 export const Header = () => {
     return (
-        <header className="w-full border-b border-gray-200 bg-[#0A0E2B] shadow-md sm:bg-white transition-colors duration-300">
+        <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-[#0A0E2B] shadow-md sm:bg-white transition-colors duration-300">
             <div className="flex w-full items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4">
 
                 {/* Left Side: Logos & VMS Title */}
@@ -14,11 +14,11 @@ export const Header = () => {
                     /> */}
 
                     {/* Mobile NIT Logo */}
-                    <img
-                        src="/white-nitc-logo.png"
-                        alt="NIT Calicut"
-                        className="h-10 w-auto object-contain sm:hidden"
-                    />
+<img
+    src="/white-nitc-logo.png"
+    alt="NIT Calicut"
+    className="h-14 w-auto object-contain sm:hidden"
+/>
 
                     {/* Desktop NIT Logo */}
                     <img
