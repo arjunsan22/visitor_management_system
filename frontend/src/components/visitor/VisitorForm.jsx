@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { visitorSchema } from "../../schemas/visitorSchema.js";
 import { createVisitor } from "../../api/visitor/visitorApi.js";
+import { useNavigate } from "react-router-dom";
+
 export const VisitorForm = () => {
 
     const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ export const VisitorForm = () => {
     });
 
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -46,19 +49,32 @@ export const VisitorForm = () => {
 
         setErrors({});
 
-        try {
+try {
 
-            const data = await createVisitor(result.data);
-            console.log("Visitor created successfully:", data);
+    const data = await createVisitor(result.data);
 
-        } catch (error) {
+    const passToken = data.data.pass_token;
 
-            console.error(
-                "Visitor creation failed:",
-                error
-            );
+    localStorage.setItem(
+        "visitorPassToken",
+        passToken
+    );
 
-        }   
+    console.log(
+        "Visitor created successfully:",
+        data
+    );
+
+    navigate(`/pass/${passToken}`);
+
+} catch (error) {
+
+    console.error(
+        "Visitor creation failed:",
+        error
+    );
+
+}
     };
 
     return (
