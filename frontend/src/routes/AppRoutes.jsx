@@ -14,16 +14,23 @@ import { VisitorPass } from "../pages/visitor/VisitorPass";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { SecurityLayout } from "../layouts/SecurityLayout";
 import { PublicLayout } from "../layouts/PublicLayout";
+import { NewVisitor } from "../pages/visitor/NewVisitor";
 
 const AppRoutes = () => {
     return (
         <BrowserRouter>
             <Routes>
+                {/* public routes */}
                 <Route element={<PublicLayout />}>
 
                     <Route
                         path="/"
                         element={<Home />}
+                    />
+
+                    <Route
+                        path="/visitor/new"
+                        element={<NewVisitor />}
                     />
 
                     <Route
