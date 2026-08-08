@@ -14,6 +14,7 @@ export const createVisitor = async (visitorData) => {
 
     const data = await response.json();
 
+    
     if (!response.ok) {
         throw new Error(
             data.message || "Failed to create visitor"
