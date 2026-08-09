@@ -68,37 +68,141 @@ export const VisitorPass = () => {
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-slate-100 px-4 py-8">
 
-      <h1>Visitor Pass</h1>
+      <div className="mx-auto w-full max-w-md">
 
-      <p>
-        Name: {visitor.name}
-      </p>
+        {/* Header */}
+        <div className="mb-6 text-center">
 
-      <p>
-        Purpose: {visitor.purpose}
-      </p>
+          <p className="text-sm font-medium tracking-widest text-blue-600">
+            NIT CALICUT
+          </p>
 
-      <p>
-        Person to Visit: {visitor.person_to_visit}
-      </p>
+          <h1 className="mt-2 text-2xl font-bold text-slate-900">
+            Visitor Pass
+          </h1>
 
-      <p>
-        Department: {visitor.department}
-      </p>
+          <p className="mt-1 text-sm text-slate-500">
+            Keep this pass available during your visit
+          </p>
 
-      <p>
-        Visit Date: {visitor.visit_date}
-      </p>
+        </div>
 
-      <p>
-        Check-in Time: {visitor.check_in_time}
-      </p>
+        {/* Pass Card */}
+        <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
 
-      <p>
-        Status: {visitor.status}
-      </p>
+          {/* Card Header */}
+          <div className="bg-slate-900 px-6 py-5 text-white">
+
+            <div className="flex items-center justify-between">
+
+              <div>
+                <p className="text-xs uppercase tracking-wider text-slate-400">
+                  Visitor
+                </p>
+
+                <h2 className="mt-1 text-xl font-semibold">
+                  {visitor.name}
+                </h2>
+              </div>
+
+              <div className="rounded-full bg-white/10 px-3 py-1">
+                <span className="text-xs font-medium">
+                  PASS
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Details */}
+          <div className="space-y-5 px-6 py-6">
+
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Purpose
+              </p>
+
+              <p className="mt-1 text-sm font-medium text-slate-800">
+                {visitor.purpose}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Person to Visit
+              </p>
+
+              <p className="mt-1 text-sm font-medium text-slate-800">
+                {visitor.person_to_visit}
+              </p>
+            </div>
+
+            <div>
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Department
+              </p>
+
+              <p className="mt-1 text-sm font-medium text-slate-800">
+                {visitor.department}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Visit Date
+                </p>
+
+                <p className="mt-1 text-sm font-medium text-slate-800">
+                  {visitor.visit_date}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Check-in
+                </p>
+
+                <p className="mt-1 text-sm font-medium text-slate-800">
+                  {visitor.check_in_time}
+                </p>
+              </div>
+
+            </div>
+
+            {/* Status */}
+            <div className="border-t border-slate-100 pt-5">
+
+              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Current Status
+              </p>
+
+              <div className="mt-2 inline-flex rounded-full bg-amber-50 px-4 py-2">
+                <span className="text-sm font-semibold text-amber-700">
+                  {visitor.status}
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* Footer */}
+          <div className="border-t border-dashed border-slate-200 px-6 py-4 text-center">
+
+            <p className="text-xs text-slate-400">
+              Please present this pass at the security gate
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
 
     </div>
   );
