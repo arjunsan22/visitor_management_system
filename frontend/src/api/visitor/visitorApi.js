@@ -23,3 +23,21 @@ export const createVisitor = async (visitorData) => {
 
     return data;
 };
+
+
+export const getVisitorPass = async (token) => {
+
+    const response = await fetch(
+        `http://localhost:5000/api/visitors/pass/${token}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message || "Failed to fetch visitor pass"
+        );
+    }
+
+    return data;
+};
