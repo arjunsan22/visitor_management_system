@@ -44,66 +44,121 @@ export const VisitorPass = () => {
 
   }, [token]);
 
+  /* Shared design-system styles (same tokens as HeroSection / VisitorForm) */
+  const GlobalStyles = () => (
+    <style>{`
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+      .font-display { font-family: 'Space Grotesk', sans-serif; }
+      .font-tag { font-family: 'JetBrains Mono', monospace; }
+      .hazard-strip {
+        background-image: repeating-linear-gradient(135deg, #C9A227 0 10px, transparent 10px 20px);
+        opacity: 0.45;
+      }
+      .corner-mark { position: relative; }
+      .corner-mark::before, .corner-mark::after {
+        content: ''; position: absolute; width: 12px; height: 12px; pointer-events: none;
+        border-color: #C9A227; opacity: 0.7;
+      }
+      .corner-mark::before { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
+      .corner-mark::after { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
+      .ticket-notch {
+        position: absolute; width: 20px; height: 20px; border-radius: 9999px;
+        background: #0A0E1A;
+      }
+      @keyframes spin-slow { to { transform: rotate(360deg); } }
+      .spin-slow { animation: spin-slow 1s linear infinite; }
+    `}</style>
+  );
+
   if (loading) {
     return (
-      <div>
-        Loading visitor pass...
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+        <GlobalStyles />
+        <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
+        <div className="flex flex-col items-center gap-4">
+          <div className="spin-slow h-9 w-9 rounded-full border-2 border-white/10 border-t-[#C9A227]"></div>
+          <span className="font-tag text-xs tracking-widest text-gray-500 uppercase">
+            Loading visitor pass...
+          </span>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div>
-        {error}
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+        <GlobalStyles />
+        <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
+        <div className="w-full max-w-sm rounded-2xl border border-red-500/20 bg-[#10162A] px-6 py-8 text-center">
+          <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-red-500/10 border border-red-500/30 text-red-400">
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M12 9v3.75m0 3.75h.008v.008H12v-.008zM21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="mt-4 text-sm font-medium text-gray-300">
+            {error}
+          </p>
+        </div>
       </div>
     );
   }
 
   if (!visitor) {
     return (
-      <div>
-        Visitor pass not found.
+      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+        <GlobalStyles />
+        <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
+        <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#10162A] px-6 py-8 text-center">
+          <p className="text-sm font-medium text-gray-400">
+            Visitor pass not found.
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-8">
+    <div className="relative min-h-screen overflow-hidden bg-[#0A0E1A] px-4 py-10 sm:py-14">
 
-      <div className="mx-auto w-full max-w-md">
+      <GlobalStyles />
+
+      <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_25%,#000_60%,transparent_100%)]"></div>
+
+      <div className="relative z-10 mx-auto w-full max-w-md">
 
         {/* Header */}
         <div className="mb-6 text-center">
-
-         
-
-          <p className="mt-1 text-sm text-slate-500">
+          <div className="inline-flex items-center gap-2 font-tag text-[10px] tracking-widest text-[#D9B84A] uppercase">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D9B84A] animate-pulse"></span>
+            Digital Access Pass
+          </div>
+          <p className="mt-2 text-sm text-gray-500">
             Keep this pass available during your visit
           </p>
-
         </div>
 
         {/* Pass Card */}
-        <div className="overflow-hidden rounded-3xl bg-white shadow-xl">
+        <div className="overflow-hidden rounded-2xl bg-[#10162A] border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.45)]">
 
           {/* Card Header */}
-          <div className="bg-slate-900 px-6 py-5 text-white">
+          <div className="corner-mark bg-[#141B31] px-6 py-5 text-white border-b border-white/[0.06]">
 
             <div className="flex items-center justify-between">
 
               <div>
-                <p className="text-xs uppercase tracking-wider text-slate-400">
+                <p className="font-tag text-[10px] uppercase tracking-widest text-gray-500">
                   Visitor
                 </p>
 
-                <h2 className="mt-1 text-xl font-semibold">
+                <h2 className="mt-1.5 font-display text-xl font-semibold text-white">
                   {visitor.name}
                 </h2>
               </div>
 
-              <div className="rounded-full bg-white/10 px-3 py-1">
-                <span className="text-xs font-medium">
+              <div className="rounded-sm border border-[#C9A227]/30 bg-[#C9A227]/10 px-3 py-1">
+                <span className="font-tag text-[10px] font-medium tracking-widest text-[#D9B84A] uppercase">
                   PASS
                 </span>
               </div>
@@ -116,31 +171,31 @@ export const VisitorPass = () => {
           <div className="space-y-5 px-6 py-6">
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+              <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                 Purpose
               </p>
 
-              <p className="mt-1 text-sm font-medium text-slate-800">
+              <p className="mt-1.5 text-sm font-medium text-gray-200">
                 {visitor.purpose}
               </p>
             </div>
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+              <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                 Person to Visit
               </p>
 
-              <p className="mt-1 text-sm font-medium text-slate-800">
+              <p className="mt-1.5 text-sm font-medium text-gray-200">
                 {visitor.person_to_visit}
               </p>
             </div>
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+              <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                 Department
               </p>
 
-              <p className="mt-1 text-sm font-medium text-slate-800">
+              <p className="mt-1.5 text-sm font-medium text-gray-200">
                 {visitor.department}
               </p>
             </div>
@@ -148,37 +203,44 @@ export const VisitorPass = () => {
             <div className="grid grid-cols-2 gap-4">
 
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                   Visit Date
                 </p>
 
-                <p className="mt-1 text-sm font-medium text-slate-800">
+                <p className="mt-1.5 text-sm font-medium text-gray-200">
                   {visitor.visit_date}
                 </p>
               </div>
 
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                   Check-in
                 </p>
 
-                <p className="mt-1 text-sm font-medium text-slate-800">
+                <p className="mt-1.5 text-sm font-medium text-gray-200">
                   {visitor.check_in_time}
                 </p>
               </div>
 
             </div>
+
+            {/* Perforated tear line */}
+            <div className="relative border-t border-dashed border-white/15 !mt-6">
+              <span className="ticket-notch -left-[10px] -top-[10px]"></span>
+              <span className="ticket-notch -right-[10px] -top-[10px]"></span>
+            </div>
+
             {/* QR Code */}
-            <div className="border-t border-slate-100 pt-5">
+            <div className="pt-1">
 
               <div className="text-center">
 
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                   Visitor Pass QR
                 </p>
 
                 <div className="mt-4 flex justify-center">
-                  <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                  <div className="rounded-xl border border-[#C9A227]/25 bg-white p-4 shadow-[0_0_0_1px_rgba(201,162,39,0.08)]">
                     <QRCodeSVG
                       value={`${window.location.origin}/pass/${visitor.pass_token}`}
                       size={180}
@@ -188,22 +250,24 @@ export const VisitorPass = () => {
                   </div>
                 </div>
 
-                <p className="mt-3 text-xs text-slate-400">
+                <p className="mt-3 text-xs text-gray-500">
                   Scan this QR code at the security gate
                 </p>
 
               </div>
 
             </div>
-            {/* Status */}
-            <div className="border-t border-slate-100 pt-5">
 
-              <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+            {/* Status */}
+            <div className="border-t border-white/[0.06] pt-5">
+
+              <p className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
                 Current Status
               </p>
 
-              <div className="mt-2 inline-flex rounded-full bg-amber-50 px-4 py-2">
-                <span className="text-sm font-semibold text-amber-700">
+              <div className="mt-2.5 inline-flex items-center gap-2 rounded-sm border border-[#C9A227]/30 bg-[#C9A227]/10 px-4 py-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#D9B84A]"></span>
+                <span className="font-tag text-xs font-semibold tracking-widest text-[#D9B84A] uppercase">
                   {visitor.status}
                 </span>
               </div>
@@ -213,9 +277,9 @@ export const VisitorPass = () => {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-dashed border-slate-200 px-6 py-4 text-center">
+          <div className="border-t border-dashed border-white/10 px-6 py-4 text-center">
 
-            <p className="text-xs text-slate-400">
+            <p className="font-tag text-[10px] tracking-widest text-gray-500 uppercase">
               Please present this pass at the security gate
             </p>
 
