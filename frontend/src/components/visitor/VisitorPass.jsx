@@ -257,8 +257,7 @@ export const VisitorPass = () => {
 
             {/* Perforated tear line */}
             <div className="relative border-t border-dashed border-white/15 !mt-6">
-              <span className="ticket-notch -left-[10px] -top-[10px]"></span>
-              <span className="ticket-notch -right-[10px] -top-[10px]"></span>
+
             </div>
 
             {/* QR Code */}
