@@ -12,6 +12,15 @@ export const VisitorPass = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Purely presentational: delays the QR reveal so the scanning animation can play first
+  const [qrReady, setQrReady] = useState(false);
+
+
+  useEffect(() => {
+    const revealTimer = setTimeout(() => setQrReady(true), 1500);
+    return () => clearTimeout(revealTimer);
+  }, []);
+
   useEffect(() => {
 
     const fetchPass = async () => {
@@ -67,6 +76,28 @@ export const VisitorPass = () => {
       }
       @keyframes spin-slow { to { transform: rotate(360deg); } }
       .spin-slow { animation: spin-slow 1s linear infinite; }
+
+      @keyframes scan-line {
+        0% { top: 8%; opacity: 0; }
+        12% { opacity: 1; }
+        88% { opacity: 1; }
+        100% { top: 90%; opacity: 0; }
+      }
+      .scan-line { animation: scan-line 1.6s ease-in-out infinite; }
+
+      @keyframes dot-pulse {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 1; }
+      }
+      .dot-1 { animation: dot-pulse 1.2s ease-in-out infinite; }
+      .dot-2 { animation: dot-pulse 1.2s ease-in-out 0.2s infinite; }
+      .dot-3 { animation: dot-pulse 1.2s ease-in-out 0.4s infinite; }
+
+      @keyframes bracket-pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+      .bracket-pulse { animation: bracket-pulse 1.6s ease-in-out infinite; }
     `}</style>
   );
 
@@ -240,13 +271,47 @@ export const VisitorPass = () => {
                 </p>
 
                 <div className="mt-4 flex justify-center">
-                  <div className="rounded-xl border border-[#C9A227]/25 bg-white p-4 shadow-[0_0_0_1px_rgba(201,162,39,0.08)]">
-                    <QRCodeSVG
-                      value={`${window.location.origin}/pass/${visitor.pass_token}`}
-                      size={180}
-                      level="H"
-                      includeMargin={true}
-                    />
+                  <div className="relative h-[212px] w-[212px]">
+
+                    {/* Generating-code animation (shown until qrReady) */}
+                    <div
+                      className={`absolute inset-0 overflow-hidden rounded-xl border border-[#C9A227]/25 bg-[#0D1224] transition-opacity duration-500 ${qrReady ? "opacity-0 pointer-events-none" : "opacity-100"
+                        }`}
+                    >
+                      {/* corner brackets */}
+                      <span className="bracket-pulse absolute left-3 top-3 h-4 w-4 border-l-2 border-t-2 border-[#C9A227]"></span>
+                      <span className="bracket-pulse absolute right-3 top-3 h-4 w-4 border-r-2 border-t-2 border-[#C9A227]"></span>
+                      <span className="bracket-pulse absolute left-3 bottom-3 h-4 w-4 border-l-2 border-b-2 border-[#C9A227]"></span>
+                      <span className="bracket-pulse absolute right-3 bottom-3 h-4 w-4 border-r-2 border-b-2 border-[#C9A227]"></span>
+
+                      {/* faint dot grid */}
+                      <div className="absolute inset-0 bg-[radial-gradient(#ffffff14_1px,transparent_1px)] bg-[size:12px_12px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_60%,transparent_100%)]"></div>
+
+                      {/* moving scan line */}
+                      <span className="scan-line absolute inset-x-3 h-[2px] bg-[#D9B84A] shadow-[0_0_8px_2px_rgba(217,184,74,0.6)]"></span>
+
+                      {/* status text */}
+                      <div className="absolute inset-x-0 bottom-4 flex items-center justify-center gap-1 font-tag text-[9px] tracking-widest text-[#D9B84A]/80 uppercase">
+                        <span>Generating Secure Code</span>
+                        <span className="dot-1">.</span>
+                        <span className="dot-2">.</span>
+                        <span className="dot-3">.</span>
+                      </div>
+                    </div>
+
+                    {/* QR reveal */}
+                    <div
+                      className={`absolute inset-0 flex items-center justify-center rounded-xl border border-[#C9A227]/25 bg-white p-4 shadow-[0_0_0_1px_rgba(201,162,39,0.08)] transition-all duration-500 ${qrReady ? "opacity-100 scale-100" : "opacity-0 scale-95 pointer-events-none"
+                        }`}
+                    >
+                      <QRCodeSVG
+                        value={`${window.location.origin}/pass/${visitor.pass_token}`}
+                        size={180}
+                        level="H"
+                        includeMargin={true}
+                      />
+                    </div>
+
                   </div>
                 </div>
 
