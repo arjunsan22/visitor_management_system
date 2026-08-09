@@ -304,7 +304,7 @@ export const VisitorPass = () => {
                         }`}
                     >
                       <QRCodeSVG
-                        value={`${window.location.origin}/pass/${visitor.pass_token}`}
+                        value={`${window.location.origin}/pass/${token}`}
                         size={180}
                         level="H"
                         includeMargin={true}
