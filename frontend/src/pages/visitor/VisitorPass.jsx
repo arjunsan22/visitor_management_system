@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
+
 
 import { getVisitorPass } from "../../api/visitor/visitorApi.js";
 
@@ -69,6 +71,7 @@ export const VisitorPass = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 px-4 py-8">
+
 
       <div className="mx-auto w-full max-w-md">
 
@@ -173,7 +176,33 @@ export const VisitorPass = () => {
               </div>
 
             </div>
+            {/* QR Code */}
+            <div className="border-t border-slate-100 pt-5">
 
+              <div className="text-center">
+
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Visitor Pass QR
+                </p>
+
+                <div className="mt-4 flex justify-center">
+                  <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+                    <QRCodeSVG
+                      value={`${window.location.origin}/pass/${visitor.pass_token}`}
+                      size={180}
+                      level="H"
+                      includeMargin={true}
+                    />
+                  </div>
+                </div>
+
+                <p className="mt-3 text-xs text-slate-400">
+                  Scan this QR code at the security gate
+                </p>
+
+              </div>
+
+            </div>
             {/* Status */}
             <div className="border-t border-slate-100 pt-5">
 
