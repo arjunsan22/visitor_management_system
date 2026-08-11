@@ -1,8 +1,9 @@
-
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export const SecurityDashboard = () => {
 
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -18,7 +19,7 @@ export const SecurityDashboard = () => {
           </p>
 
           <h1 className="mt-2 text-3xl font-bold text-slate-900">
-            Welcome back 👋
+            Welcome back, {user?.name} 👋
           </h1>
 
           <p className="mt-2 text-sm text-slate-500">

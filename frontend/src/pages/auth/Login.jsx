@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login } from "../../api/auth/authApi.js";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../../context/AuthContext";
 
 export const Login = () => {
 
@@ -11,6 +11,7 @@ export const Login = () => {
     });
     const navigate = useNavigate();
 
+    const { loginUser } = useAuth();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -38,6 +39,7 @@ export const Login = () => {
                 formData.email,
                 formData.password
             );
+            loginUser(data.data);
 
             console.log(
                 "Login successful:",
