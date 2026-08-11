@@ -252,7 +252,7 @@ export const VisitorDetails = () => {
           </div>
 
           {/* Action */}
-          {visitor.status === "pending" && (
+          {visitor.status === "Pending" && (
             <div className="border-t border-slate-100 bg-slate-50 px-6 py-5">
 
 <button
