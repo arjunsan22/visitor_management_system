@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { login } from "../../api/auth/authApi.js";
+import { useNavigate } from "react-router-dom";
+
 
 export const Login = () => {
 
@@ -7,6 +9,7 @@ export const Login = () => {
         email: "",
         password: "",
     });
+    const navigate = useNavigate();
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -40,6 +43,16 @@ export const Login = () => {
                 "Login successful:",
                 data
             );
+
+            if (data.data.role === "security") {
+
+                navigate("/security/dashboard");
+
+            } else if (data.data.role === "admin") {
+
+                navigate("/admin/dashboard");
+
+            }
 
         } catch (error) {
 
