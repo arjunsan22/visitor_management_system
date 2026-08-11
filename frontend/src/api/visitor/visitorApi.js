@@ -41,3 +41,25 @@ export const getVisitorPass = async (token) => {
 
     return data;
 };
+
+
+export const verifyVisitor = async (token) => {
+
+    const response = await fetch(
+        `http://localhost:5000/api/visitors/${token}/verify`,
+        {
+            method: "PATCH",
+            credentials: "include",
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message || "Failed to verify visitor"
+        );
+    }
+
+    return data;
+};

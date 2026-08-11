@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getVisitorPass } from "../../api/visitor/visitorApi.js";
+import { getVisitorPass , verifyVisitor} from "../../api/visitor/visitorApi.js";
 
 export const VisitorDetails = () => {
 
@@ -49,6 +49,30 @@ export const VisitorDetails = () => {
 
   }, [token]);
 
+  const handleVerify = async () => {
+
+    try {
+
+        const data = await verifyVisitor(token);
+
+        console.log(
+            "Visitor verified successfully:",
+            data
+        );
+
+        const updatedData = await getVisitorPass(token);
+
+        setVisitor(updatedData.data);
+
+    } catch (error) {
+
+        console.error(
+            "Visitor verification failed:",
+            error
+        );
+
+    }
+};
   if (loading) {
     return (
       <div>
@@ -231,12 +255,13 @@ export const VisitorDetails = () => {
           {visitor.status === "pending" && (
             <div className="border-t border-slate-100 bg-slate-50 px-6 py-5">
 
-              <button
-                type="button"
-                className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
-              >
-                Verify Visitor
-              </button>
+<button
+    type="button"
+    onClick={handleVerify}
+    className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+>
+    Verify Visitor
+</button>
 
             </div>
           )}
