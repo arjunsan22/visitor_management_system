@@ -43,7 +43,7 @@ export const ScannerComponent = () => {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4 py-10 sm:px-6 sm:py-14 lg:py-20">
+    <div className="relative flex flex-1 w-full min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4 py-10 sm:px-6 sm:py-14 lg:py-20">
 
       {/* Shared design-system tokens */}
       <style>{`

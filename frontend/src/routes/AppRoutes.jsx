@@ -15,6 +15,9 @@ import { AdminLayout } from "../layouts/AdminLayout";
 import { SecurityLayout } from "../layouts/SecurityLayout";
 import { PublicLayout } from "../layouts/PublicLayout";
 import { NewVisitor } from "../pages/visitor/NewVisitor";
+// Protection routes
+import { ProtectedRoute } from "./ProtectedRoute";
+import { PublicOnlyRoute } from "./PublicOnlyRoute";
 
 const AppRoutes = () => {
     return (
@@ -33,10 +36,12 @@ const AppRoutes = () => {
                         element={<NewVisitor />}
                     />
 
-                    <Route
-                        path="/login"
-                        element={<Login />}
-                    />
+                    <Route element={<PublicOnlyRoute />}>
+                        <Route
+                            path="/login"
+                            element={<Login />}
+                        />
+                    </Route>
 
                     <Route
                         path="/pass/:token"
@@ -47,48 +52,55 @@ const AppRoutes = () => {
 
                 {/* Admin */}
                 <Route
-                    path="/admin"
-                    element={<AdminLayout />}
+                    element={<ProtectedRoute allowedRole="admin" />}
                 >
-
                     <Route
-                        path="dashboard"
-                        element={<Dashboard />}
-                    />
+                        path="/admin"
+                        element={<AdminLayout />}
+                    >
 
-                    <Route
-                        path="visitors"
-                        element={<Visitors />}
-                    />
+                        <Route
+                            path="dashboard"
+                            element={<Dashboard />}
+                        />
 
-                    <Route
-                        path="security"
-                        element={<SecurityManagement />}
-                    />
+                        <Route
+                            path="visitors"
+                            element={<Visitors />}
+                        />
 
+                        <Route
+                            path="security"
+                            element={<SecurityManagement />}
+                        />
+                    </Route>
                 </Route>
 
                 {/* Security */}
                 <Route
-                    path="/security"
-                    element={<SecurityLayout />}
+                    element={<ProtectedRoute allowedRole="security" />}
                 >
-
                     <Route
-                        path="dashboard"
-                        element={<SecurityDashboard />}
-                    />
+                        path="/security"
+                        element={<SecurityLayout />}
+                    >
 
-                    <Route
-                        path="scanner"
-                        element={<Scanner />}
-                    />
+                        <Route
+                            path="dashboard"
+                            element={<SecurityDashboard />}
+                        />
 
-                    <Route
-                        path="visitor/:token"
-                        element={<VisitorDetails />}
-                    />
+                        <Route
+                            path="scanner"
+                            element={<Scanner />}
+                        />
 
+                        <Route
+                            path="visitor/:token"
+                            element={<VisitorDetails />}
+                        />
+
+                    </Route>
                 </Route>
 
             </Routes>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getVisitorPass , verifyVisitor} from "../../api/visitor/visitorApi.js";
+import { getVisitorPass, verifyVisitor } from "../../api/visitor/visitorApi.js";
 
 export const VisitorDetailsComponents = () => {
 
@@ -53,26 +53,26 @@ export const VisitorDetailsComponents = () => {
 
     try {
 
-        const data = await verifyVisitor(token);
+      const data = await verifyVisitor(token);
 
-        console.log(
-            "Visitor verified successfully:",
-            data
-        );
+      console.log(
+        "Visitor verified successfully:",
+        data
+      );
 
-        const updatedData = await getVisitorPass(token);
+      const updatedData = await getVisitorPass(token);
 
-        setVisitor(updatedData.data);
+      setVisitor(updatedData.data);
 
     } catch (error) {
 
-        console.error(
-            "Visitor verification failed:",
-            error
-        );
+      console.error(
+        "Visitor verification failed:",
+        error
+      );
 
     }
-};
+  };
   if (loading) {
     return (
       <div>
@@ -98,7 +98,7 @@ export const VisitorDetailsComponents = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 px-4 py-8">
+    <div className="flex flex-1 flex-col w-full min-h-screen bg-slate-100 px-4 py-8">
 
       <div className="mx-auto w-full max-w-lg">
 
@@ -255,13 +255,13 @@ export const VisitorDetailsComponents = () => {
           {visitor.status === "Pending" && (
             <div className="border-t border-slate-100 bg-slate-50 px-6 py-5">
 
-<button
-    type="button"
-    onClick={handleVerify}
-    className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
->
-    Verify Visitor
-</button>
+              <button
+                type="button"
+                onClick={handleVerify}
+                className="w-full rounded-xl bg-blue-600 px-5 py-3 font-semibold text-white transition hover:bg-blue-700"
+              >
+                Verify Visitor
+              </button>
 
             </div>
           )}
