@@ -145,6 +145,16 @@ export const VisitorDetailsComponents = () => {
   }
 
   const isPending = visitor.status === "Pending";
+  const isVerified = Boolean(visitor.verified_by_name);
+  const isCheckedOut = Boolean(visitor.check_out);
+
+  const statusColor = isPending
+    ? { dot: "bg-amber-400", text: "text-amber-300", border: "border-amber-400/30", bg: "bg-amber-400/10" }
+    : isVerified
+      ? { dot: "bg-emerald-400", text: "text-emerald-300", border: "border-emerald-400/30", bg: "bg-emerald-400/10" }
+      : { dot: "bg-[#D9B84A]", text: "text-[#D9B84A]", border: "border-[#C9A227]/30", bg: "bg-[#C9A227]/10" };
+
+  const initials = visitor.name?.trim()?.charAt(0)?.toUpperCase() || "V";
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#0A0E1A] px-4 pb-16 pt-8 sm:px-6 sm:pt-12 lg:pt-16">
@@ -178,19 +188,54 @@ export const VisitorDetailsComponents = () => {
           {/* Visitor Header */}
           <div className="corner-mark border-b border-white/[0.06] bg-[#141B31] px-6 py-6">
 
-            <p className="font-tag text-[10px] uppercase tracking-widest text-gray-500">
-              Visitor
-            </p>
+            <div className="flex items-start gap-4">
 
-            <h2 className="font-display mt-2 text-xl font-semibold text-white sm:text-2xl">
-              {visitor.name}
-            </h2>
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] font-display text-base font-semibold text-gray-300">
+                {initials}
+              </div>
 
-            <div className="mt-3 inline-flex items-center gap-2 rounded-sm border border-[#C9A227]/30 bg-[#C9A227]/10 px-3 py-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#D9B84A]"></span>
-              <span className="font-tag text-[10px] font-medium tracking-widest text-[#D9B84A] uppercase">
-                {visitor.status}
-              </span>
+              <div className="min-w-0 flex-1">
+                <p className="font-tag text-[10px] uppercase tracking-widest text-gray-500">
+                  Visitor
+                </p>
+
+                <div className="mt-1.5 flex items-center gap-1.5">
+                  <h2 className="font-display truncate text-xl font-semibold text-white sm:text-2xl">
+                    {visitor.name}
+                  </h2>
+
+                  {isVerified && (
+                    <svg
+                      className="h-5 w-5 shrink-0 sm:h-[22px] sm:w-[22px]"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      role="img"
+                      aria-label="Verified visitor"
+                    >
+                      <title>Verified</title>
+                      <path
+                        d="M11 1.5l2.35 1.24 2.6-.47 1.24 2.35 2.35 1.24-.47 2.6 1.24 2.35-1.24 2.35.47 2.6-2.35 1.24-1.24 2.35-2.6-.47L11 20.5l-2.35-1.24-2.6.47-1.24-2.35-2.35-1.24.47-2.6L1.5 11l1.24-2.35-.47-2.6 2.35-1.24 1.24-2.35 2.6.47L11 1.5z"
+                        fill="#3B82F6"
+                      />
+                      <path
+                        d="M7.2 11.2l2.4 2.4 5.2-5.2"
+                        stroke="white"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                </div>
+
+                <div className={`mt-3 inline-flex items-center gap-2 rounded-sm border ${statusColor.border} ${statusColor.bg} px-3 py-1`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${statusColor.dot}`}></span>
+                  <span className={`font-tag text-[10px] font-medium tracking-widest ${statusColor.text} uppercase`}>
+                    {visitor.status}
+                  </span>
+                </div>
+              </div>
+
             </div>
 
           </div>
