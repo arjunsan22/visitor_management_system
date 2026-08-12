@@ -125,3 +125,22 @@ const {accessToken, refreshToken: newRefreshToken } = generateTokens(admin);
         )
     );
 });
+
+
+//authentication api//
+
+export const getCurrentUser = asyncHandler(async (req, res) => {
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                id: req.user.id,
+                name: req.user.name,
+                email: req.user.email,
+                role: req.user.role,
+            },
+            "Current user fetched successfully"
+        )
+    );
+});
