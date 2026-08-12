@@ -145,7 +145,7 @@ export const VisitorDetailsComponents = () => {
   }
 
   const isPending = visitor.status === "Pending";
-  const isVerified = Boolean(visitor.verified_by_name);
+  const isVerified = Boolean(visitor.verified_by);
   const isCheckedOut = Boolean(visitor.check_out);
 
   const statusColor = isPending
@@ -320,7 +320,7 @@ export const VisitorDetailsComponents = () => {
                   <span className="font-medium text-gray-400">
                     Verified By:
                   </span>{" "}
-                  {visitor.verified_by_name || "Not verified"}
+                  {visitor.verified_by || "Not verified"}
                 </p>
 
                 <p className="text-gray-300">
