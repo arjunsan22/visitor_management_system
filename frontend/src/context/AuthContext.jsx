@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getCurrentUser } from "../api/auth/authApi";
+import { getCurrentUser, refreshAccessToken, logout } from "../api/auth/authApi";
 
 const AuthContext = createContext(null);
 
@@ -21,7 +21,19 @@ export const AuthProvider = ({ children }) => {
 
             } catch (error) {
 
-                setUser(null);
+                try {
+
+                    await refreshAccessToken();
+
+                    const data = await getCurrentUser();
+
+                    setUser(data.data);
+
+                } catch (refreshError) {
+
+                    setUser(null);
+
+                }
 
             } finally {
 
@@ -39,8 +51,17 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
     };
 
-    const logoutUser = () => {
-        setUser(null);
+    const logoutUser = async () => {
+
+        try {
+
+            await logout();
+
+        } finally {
+
+            setUser(null);
+
+        }
     };
 
     return (

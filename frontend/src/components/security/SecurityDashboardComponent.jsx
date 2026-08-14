@@ -1,10 +1,13 @@
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+import { LogoutButton } from "../common/LogoutButton";
+
 export const SecurityDashboardComponent = () => {
 
   const { user } = useAuth();
   const navigate = useNavigate();
+
 
   const initials = user?.name?.trim()?.charAt(0)?.toUpperCase() || "S";
 
@@ -12,6 +15,7 @@ export const SecurityDashboardComponent = () => {
     <div className="relative min-h-screen w-full overflow-hidden bg-[#0A0E1A] pb-16">
 
       {/* Shared design-system tokens */}
+
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
         .font-display { font-family: 'Space Grotesk', sans-serif; }
@@ -52,6 +56,8 @@ export const SecurityDashboardComponent = () => {
             <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A227]/30 bg-[#C9A227]/10 font-display text-sm font-semibold text-[#D9B84A]">
               {initials}
             </div>
+            <div className="h-4 w-px bg-white/10 hidden sm:block"></div>
+            <LogoutButton />
           </div>
         </div>
 

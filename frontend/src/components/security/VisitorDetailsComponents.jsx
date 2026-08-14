@@ -98,7 +98,7 @@ export const VisitorDetailsComponents = () => {
 
   if (loading) {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+      <div className="relative flex flex-1 w-full min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
         <div className="flex flex-col items-center gap-4">
@@ -113,7 +113,7 @@ export const VisitorDetailsComponents = () => {
 
   if (error) {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+      <div className="relative flex flex-1 w-full min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
         <div className="w-full max-w-sm rounded-2xl border border-red-500/20 bg-[#10162A] px-6 py-8 text-center">
@@ -132,13 +132,29 @@ export const VisitorDetailsComponents = () => {
 
   if (!visitor) {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+      <div className="relative flex flex-1 w-full min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
-        <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#10162A] px-6 py-8 text-center">
-          <p className="text-sm font-medium text-gray-400">
-            Visitor not found.
+        <div className="w-full max-w-sm rounded-2xl border border-white/10 bg-[#10162A] px-6 py-8 text-center shadow-[0_15px_40px_rgba(0,0,0,0.4)]">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-gray-500/30 bg-gray-500/10 text-gray-400">
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 className="mt-4 font-display text-lg font-semibold text-white">Record Not Found</h3>
+          <p className="mt-2 text-sm text-gray-400">
+            We couldn't locate a valid visitor pass for this code.
           </p>
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-display text-sm font-medium text-white transition-colors hover:bg-white/[0.06]"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Return to Scanner
+          </button>
         </div>
       </div>
     );
