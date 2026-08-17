@@ -49,32 +49,32 @@ export const VisitorForm = () => {
 
         setErrors({});
 
-try {
+        try {
 
-    const data = await createVisitor(result.data);
+            const data = await createVisitor(result.data);
 
-    const passToken = data.data.pass_token;
+            const passToken = data.data.pass_token;
 
-    localStorage.setItem(
-        "visitorPassToken",
-        passToken
-    );
+            localStorage.setItem(
+                "visitorPassToken",
+                passToken
+            );
 
-    console.log(
-        "Visitor created successfully:",
-        data
-    );
+            console.log(
+                "Visitor created successfully:",
+                data
+            );
 
-    navigate(`/pass/${passToken}`);
+            navigate(`/pass/${passToken}`);
 
-} catch (error) {
+        } catch (error) {
 
-    console.error(
-        "Visitor creation failed:",
-        error
-    );
+            console.error(
+                "Visitor creation failed:",
+                error
+            );
 
-}
+        }
     };
 
     return (

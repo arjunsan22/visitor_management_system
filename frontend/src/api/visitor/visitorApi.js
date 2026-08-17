@@ -63,3 +63,31 @@ export const verifyVisitor = async (token) => {
 
     return data;
 };
+
+
+export const checkoutVisitor = async (token, check_out_at) => {
+
+    const response = await fetch(
+        `http://localhost:5000/api/visitors/${token}/checkout`,
+        {
+            method: "PATCH",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                check_out_at,
+            }),
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            data.message || "Failed to checkout visitor"
+        );
+    }
+
+    return data;
+};

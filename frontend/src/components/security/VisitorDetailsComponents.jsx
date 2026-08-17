@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { getVisitorPass, verifyVisitor } from "../../api/visitor/visitorApi.js";
+import { getVisitorPass, verifyVisitor, checkoutVisitor } from "../../api/visitor/visitorApi.js";
 
 export const VisitorDetailsComponents = () => {
 
@@ -10,6 +10,8 @@ export const VisitorDetailsComponents = () => {
   const [visitor, setVisitor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [checkOutAt, setCheckOutAt] = useState("");
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
 
   useEffect(() => {
 
@@ -70,6 +72,47 @@ export const VisitorDetailsComponents = () => {
         "Visitor verification failed:",
         error
       );
+
+    }
+  };
+
+  const handleCheckout = async () => {
+
+    if (!checkOutAt) {
+      alert("Please select checkout time");
+      return;
+    }
+
+    try {
+
+      setCheckoutLoading(true);
+
+      const data = await checkoutVisitor(
+        token,
+        checkOutAt
+      );
+
+      console.log(
+        "Visitor checked out successfully:",
+        data
+      );
+
+      setVisitor((prev) => ({
+        ...prev,
+        status: "Checked Out",
+        check_out_at: checkOutAt,
+      }));
+
+    } catch (error) {
+
+      console.error(
+        "Checkout failed:",
+        error
+      );
+
+    } finally {
+
+      setCheckoutLoading(false);
 
     }
   };
@@ -383,6 +426,42 @@ export const VisitorDetailsComponents = () => {
                 <svg className="h-4 w-4 text-[#D9B84A] transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                 </svg>
+              </button>
+
+            </div>
+          )}
+
+          {/* Checkout Action */}
+          {visitor?.status === "Verified" && !isCheckedOut && (
+            <div className="border-t border-white/[0.07] bg-[#141B31]/40 px-6 py-5 space-y-4">
+
+              <div className="flex flex-col space-y-2">
+                <label className="font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
+                  Checkout Time
+                </label>
+                <input
+                  type="time"
+                  value={checkOutAt}
+                  onChange={(e) => setCheckOutAt(e.target.value)}
+                  className="w-full rounded-lg border border-white/10 bg-[#10162A] px-4 py-3 text-sm text-gray-200 focus:border-emerald-500/50 focus:outline-none focus:ring-1 focus:ring-emerald-500/50 transition-colors"
+                  style={{ colorScheme: 'dark' }}
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={handleCheckout}
+                disabled={checkoutLoading}
+                className="corner-mark group flex w-full items-center justify-between gap-4 border-l-2 border-emerald-500/70 bg-emerald-500/[0.03] px-5 py-4 transition-colors duration-200 hover:bg-emerald-500/[0.08] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <span className="font-display text-sm font-semibold tracking-wide text-white sm:text-base">
+                  {checkoutLoading ? "Checking out..." : "Checkout Visitor"}
+                </span>
+                {!checkoutLoading && (
+                  <svg className="h-4 w-4 text-emerald-400 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                )}
               </button>
 
             </div>

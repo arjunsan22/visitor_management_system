@@ -66,7 +66,7 @@ export const getVisitorPass = asyncHandler(async (req, res) => {
             status: visitor.status,
             verified_by: visitor.verified_by_name,
             verified_at: visitor.verified_at,
-            check_out: visitor.check_out,
+            check_out_at: visitor.check_out_at,
         },
         "Visitor pass fetched successfully"
     )
@@ -76,8 +76,9 @@ export const getVisitorPass = asyncHandler(async (req, res) => {
 /////////////////////////
 export const verifyVisitorPass = asyncHandler(async (req, res) => {
 
+    
     const { token } = req.params;
-const verified_by = req.user.id;
+    const verified_by = req.user.id;
     const visitor = await findByPassToken(token);
 
     if (!visitor) {
@@ -110,16 +111,17 @@ export const checkoutVisitorPass = asyncHandler(async (req, res) => {
     const { check_out_at } = req.body;
 
     const visitor = await findByPassToken(token);
+
+    if (!visitor) {
+    throw new ApiError(404, "Visitor not found");
+}
+
     if (visitor.status !== "Verified") {
     throw new ApiError(
         400,
         "Visitor must be verified before checkout"
     );
 }
-
-    if (!visitor) {
-        throw new ApiError(404, "Visitor not found");
-    }
 
     await checkoutVisitor(
         token,

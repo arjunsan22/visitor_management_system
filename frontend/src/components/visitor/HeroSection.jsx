@@ -1,7 +1,83 @@
-
+import { useState, useEffect } from "react";
+import { getVisitorPass } from '../../api/visitor/visitorApi'
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const HeroSection = () => {
+
+    const navigate = useNavigate();
+    const [visitorPass, setVisitorPass] = useState(null);
+    useEffect(() => {
+
+        const token = localStorage.getItem(
+            "visitorPassToken"
+        );
+
+        if (!token) {
+            return;
+        }
+
+
+
+        const fetchVisitorPass = async () => {
+
+            try {
+
+                const data = await getVisitorPass(token);
+
+                setVisitorPass(data.data);
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to fetch visitor pass:",
+                    error
+                );
+
+                setVisitorPass(null);
+            }
+
+        };
+
+        fetchVisitorPass();
+
+    }, []);
+    // Logic to check if the pass is still valid based on check_out_at time
+    let isPassValid = true;
+
+    if (visitorPass) {
+        if (visitorPass.check_out_at) {
+            const now = new Date();
+            
+            // check_out_at is "HH:MM". We split it to compare with current time.
+            const [checkoutHours, checkoutMinutes] = visitorPass.check_out_at.split(':').map(Number);
+            
+            const currentHours = now.getHours();
+            const currentMinutes = now.getMinutes();
+
+            // If the current time has passed the checkout time
+            if (currentHours > checkoutHours || (currentHours === checkoutHours && currentMinutes >= checkoutMinutes)) {
+                isPassValid = false;
+            }
+
+            // Also check if the visit_date is in the past (to prevent yesterday's pass from showing today before the checkout time)
+            if (visitorPass.visit_date) {
+                const visitDate = new Date(visitorPass.visit_date);
+                const today = new Date();
+                
+                // Reset times to compare purely by date
+                today.setHours(0, 0, 0, 0);
+                visitDate.setHours(0, 0, 0, 0);
+                
+                if (today.getTime() > visitDate.getTime()) {
+                    isPassValid = false;
+                }
+            }
+        }
+    }
+
+    const canShowPass = visitorPass && isPassValid;
+
     return (
         <section className="relative flex flex-1 items-center justify-center overflow-hidden bg-[#0A0E1A] px-4 py-16 sm:px-6 lg:px-12">
 
@@ -81,7 +157,7 @@ export const HeroSection = () => {
                             Streamlined access clearance and secure credential processing for NIT Calicut visitors.
                         </p>
 
-                        {/* Actions — document / form-field styled, not gradient pills */}
+                        {/* Actions */}
                         <div className="mt-9 flex flex-col gap-3.5 max-w-md mx-auto lg:mx-0 w-full">
 
                             <Link
@@ -104,24 +180,36 @@ export const HeroSection = () => {
                                 </svg>
                             </Link>
 
-                            <button
-                                className="group flex items-center justify-between gap-4 border-l-2 border-white/15 bg-white/[0.02] px-5 py-4 transition-colors duration-200 hover:bg-white/[0.05] hover:border-blue-400/50"
-                            >
-                                <div className="flex items-center gap-4">
-                                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-white/[0.04] border border-white/10 text-gray-400 transition-colors group-hover:text-blue-300">
-                                        <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                                        </svg>
+                            {canShowPass && (
+                                <button
+                                    onClick={() => {
+                                        const token = localStorage.getItem("visitorPassToken");
+                                        if (token) {
+                                            navigate(`/pass/${token}`);
+                                        }
+                                    }}
+                                    className="corner-mark group flex items-center justify-between gap-4 border-l-2 border-emerald-500/70 bg-emerald-500/[0.03] px-5 py-4 transition-all duration-300 hover:bg-emerald-500/[0.08]"
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 transition-all group-hover:scale-105 group-hover:border-emerald-400/50 group-hover:shadow-[0_0_15px_rgba(52,211,153,0.2)]">
+                                            <span className="absolute top-1 right-1 flex h-1.5 w-1.5">
+                                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                                            </span>
+                                            <svg className="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+                                            </svg>
+                                        </div>
+                                        <div className="text-left">
+                                            <span className="font-tag block text-[10px] tracking-widest text-emerald-500/80 uppercase">Active Pass</span>
+                                            <span className="block text-base font-semibold text-emerald-100 mt-0.5 group-hover:text-emerald-50 transition-colors">Show Pass</span>
+                                        </div>
                                     </div>
-                                    <div className="text-left">
-                                        <span className="font-tag block text-[10px] tracking-widest text-gray-500 uppercase">Existing Visitor</span>
-                                        <span className="block text-base font-semibold text-gray-200 mt-0.5 group-hover:text-white">Show Pass</span>
-                                    </div>
-                                </div>
-                                <svg className="h-4 w-4 text-gray-500 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
+                                    <svg className="h-4 w-4 text-emerald-500/50 transition-all duration-200 group-hover:translate-x-1 group-hover:text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            )}
                         </div>
                     </div>
 
