@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
 
 import { getVisitorPass } from "../../api/visitor/visitorApi";
+import { validateVisitorPass } from "../../utils/passValidation";
 
 export const VisitorPass = () => {
 
@@ -29,7 +30,12 @@ export const VisitorPass = () => {
 
         const data = await getVisitorPass(token);
 
-        setVisitor(data.data);
+        if (!validateVisitorPass(data.data)) {
+          setError("This pass is no longer valid or has expired.");
+          setVisitor(null);
+        } else {
+          setVisitor(data.data);
+        }
 
       } catch (error) {
 
