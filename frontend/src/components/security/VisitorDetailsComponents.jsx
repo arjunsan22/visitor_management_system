@@ -395,18 +395,64 @@ export const VisitorDetailsComponents = () => {
 
             {/* Checkout Information */}
             <div className="border-t border-dashed border-white/10 pt-5">
+              <div className="mb-3 flex items-center justify-between">
+                <p className="font-tag text-[10px] font-medium uppercase tracking-[0.18em] text-gray-500">
+                  Checkout
+                </p>
 
-              <p className="mb-3 font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">
-                Checkout
-              </p>
+                <span
+                  className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium ${visitor.check_out_at
+                      ? "bg-emerald-500/10 text-emerald-400 ring-1 ring-emerald-500/20"
+                      : "bg-amber-500/10 text-amber-400 ring-1 ring-amber-500/20"
+                    }`}
+                >
+                  <span
+                    className={`h-1.5 w-1.5 rounded-full ${visitor.check_out_at ? "bg-emerald-400" : "bg-amber-400"
+                      }`}
+                  />
 
-              <p className="text-sm text-gray-300">
-                <span className="font-medium text-gray-400">
-                  Checkout Time:
-                </span>{" "}
-                {visitor.check_out || "Not checked out"}
-              </p>
+                  {visitor.check_out_at ? "Checked Out" : "Not Checked Out"}
+                </span>
+              </div>
 
+              <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3.5 transition-colors hover:bg-white/[0.05]">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/[0.06] ring-1 ring-white/10">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    className="h-4 w-4 text-gray-400"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 6v6l4 2"
+                    />
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="9"
+                    />
+                  </svg>
+                </div>
+
+                <div className="min-w-0">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-gray-500">
+                    Checkout Time
+                  </p>
+
+                  <p
+                    className={`mt-0.5 truncate text-sm font-medium ${visitor.check_out_at
+                        ? "text-gray-200"
+                        : "text-gray-500"
+                      }`}
+                  >
+                    {visitor.check_out_at || "Visitor has not checked out yet"}
+                  </p>
+                </div>
+              </div>
             </div>
 
           </div>
