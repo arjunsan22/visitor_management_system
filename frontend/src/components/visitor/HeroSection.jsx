@@ -129,7 +129,7 @@ export const HeroSection = () => {
 
                             <Link
                                 to="/visitor/new"
-                                className="corner-mark group flex items-center justify-between gap-4 border-l-2 border-[#C9A227] bg-white/[0.03] px-5 py-4 transition-colors duration-200 hover:bg-white/[0.06]"
+                                className="corner-mark group flex items-center justify-between gap-4 border-l-2 border-[#C9A227] bg-white/[0.03] px-5 py-4 transition-colors duration-200 hover:bg-white/[0.06] cursor-pointer"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-[#C9A227]/10 border border-[#C9A227]/25 text-[#D9B84A]">
@@ -155,7 +155,7 @@ export const HeroSection = () => {
                                             navigate(`/pass/${token}`);
                                         }
                                     }}
-                                    className="corner-mark group flex items-center justify-between gap-4 border-l-2 border-emerald-500/70 bg-emerald-500/[0.03] px-5 py-4 transition-all duration-300 hover:bg-emerald-500/[0.08]"
+                                    className="corner-mark group flex items-center justify-between gap-4 border-l-2 border-emerald-500/70 bg-emerald-500/[0.03] px-5 py-4 transition-all duration-300 hover:bg-emerald-500/[0.08] cursor-pointer"
                                 >
                                     <div className="flex items-center gap-4">
                                         <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 transition-all group-hover:scale-105 group-hover:border-emerald-400/50 group-hover:shadow-[0_0_15px_rgba(52,211,153,0.2)]">
