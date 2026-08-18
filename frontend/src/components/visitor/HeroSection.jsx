@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { getVisitorPass } from '../../api/visitor/visitorApi'
+import { getVisitorPass } from '../../api/visitor/visitorApi';
+import { validateVisitorPass } from '../../utils/passValidation';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +8,7 @@ export const HeroSection = () => {
 
     const navigate = useNavigate();
     const [visitorPass, setVisitorPass] = useState(null);
+    
     useEffect(() => {
 
         const token = localStorage.getItem(
@@ -16,8 +18,6 @@ export const HeroSection = () => {
         if (!token) {
             return;
         }
-
-
 
         const fetchVisitorPass = async () => {
 
@@ -42,41 +42,8 @@ export const HeroSection = () => {
         fetchVisitorPass();
 
     }, []);
-    // Logic to check if the pass is still valid based on check_out_at time
-    let isPassValid = true;
 
-    if (visitorPass) {
-        if (visitorPass.check_out_at) {
-            const now = new Date();
-            
-            // check_out_at is "HH:MM". We split it to compare with current time.
-            const [checkoutHours, checkoutMinutes] = visitorPass.check_out_at.split(':').map(Number);
-            
-            const currentHours = now.getHours();
-            const currentMinutes = now.getMinutes();
-
-            // If the current time has passed the checkout time
-            if (currentHours > checkoutHours || (currentHours === checkoutHours && currentMinutes >= checkoutMinutes)) {
-                isPassValid = false;
-            }
-
-            // Also check if the visit_date is in the past (to prevent yesterday's pass from showing today before the checkout time)
-            if (visitorPass.visit_date) {
-                const visitDate = new Date(visitorPass.visit_date);
-                const today = new Date();
-                
-                // Reset times to compare purely by date
-                today.setHours(0, 0, 0, 0);
-                visitDate.setHours(0, 0, 0, 0);
-                
-                if (today.getTime() > visitDate.getTime()) {
-                    isPassValid = false;
-                }
-            }
-        }
-    }
-
-    const canShowPass = visitorPass && isPassValid;
+    const canShowPass = validateVisitorPass(visitorPass);
 
     return (
         <section className="relative flex flex-1 items-center justify-center overflow-hidden bg-[#0A0E1A] px-4 py-16 sm:px-6 lg:px-12">
