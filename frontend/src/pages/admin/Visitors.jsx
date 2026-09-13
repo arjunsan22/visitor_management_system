@@ -63,7 +63,7 @@ export const Visitors = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(search);
-      setPage(1); // Reset page on search change after debounce
+      setPage(1); 
     }, 1000);
     return () => clearTimeout(handler);
   }, [search]);
@@ -153,6 +153,36 @@ export const Visitors = () => {
     return () => ctx.revert();
 
   }, [visitors, loading]);
+
+  /* ---- Formatters ---- */
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    const d = new Date(dateString);
+    if (isNaN(d.getTime())) return dateString;
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  const formatTime = (val) => {
+    if (!val) return "-";
+    if (typeof val === 'string' && val.includes('T')) {
+      const d = new Date(val);
+      if (!isNaN(d.getTime())) {
+        return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+    if (typeof val === 'string' && val.includes(':')) {
+      const parts = val.split(':');
+      let hours = parseInt(parts[0], 10);
+      const minutes = parts[1];
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      return `${hours}:${minutes} ${ampm}`;
+    }
+    return val;
+  };
 
   /* ---- Presentation only: status badge color mapping ---- */
   const statusStyle = (value) => {
@@ -292,6 +322,7 @@ export const Visitors = () => {
                 <th className="px-5 py-3.5 font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">Purpose</th>
                 <th className="px-5 py-3.5 font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">Department</th>
                 <th className="px-5 py-3.5 font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">Visit Date</th>
+                <th className="px-5 py-3.5 font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">Check-in</th>
                 <th className="px-5 py-3.5 font-tag text-[10px] font-medium uppercase tracking-widest text-gray-500">Status</th>
               </tr>
             </thead>
@@ -300,7 +331,7 @@ export const Visitors = () => {
 
               {visitors.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center text-sm text-gray-500">
+                  <td colSpan={8} className="px-5 py-10 text-center text-sm text-gray-500">
                     No visitors found.
                   </td>
                 </tr>
@@ -334,8 +365,12 @@ export const Visitors = () => {
                     {visitor.department}
                   </td>
 
-                  <td className="px-5 py-3.5 text-sm text-gray-400">
-                    {visitor.visit_date}
+                  <td className="px-5 py-3.5 text-sm text-gray-400 whitespace-nowrap">
+                    {formatDate(visitor.visit_date)}
+                  </td>
+
+                  <td className="px-5 py-3.5 text-sm text-gray-400 whitespace-nowrap">
+                    {formatTime(visitor.check_in_time)}
                   </td>
 
                   <td className="px-5 py-3.5">
@@ -390,13 +425,17 @@ export const Visitors = () => {
                 </div>
                 <div>
                   <p className="font-tag text-[9px] uppercase tracking-widest text-gray-500">Visit Date</p>
-                  <p className="mt-1 text-sm text-gray-300">{visitor.visit_date}</p>
+                  <p className="mt-1 text-sm text-gray-300">{formatDate(visitor.visit_date)}</p>
+                </div>
+                <div>
+                  <p className="font-tag text-[9px] uppercase tracking-widest text-gray-500">Check-in</p>
+                  <p className="mt-1 text-sm text-gray-300">{formatTime(visitor.check_in_time)}</p>
                 </div>
                 <div>
                   <p className="font-tag text-[9px] uppercase tracking-widest text-gray-500">Department</p>
                   <p className="mt-1 text-sm text-gray-300">{visitor.department}</p>
                 </div>
-                <div>
+                <div className="col-span-2">
                   <p className="font-tag text-[9px] uppercase tracking-widest text-gray-500">Purpose</p>
                   <p className="mt-1 text-sm text-gray-300">{visitor.purpose}</p>
                 </div>
