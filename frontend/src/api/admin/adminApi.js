@@ -26,7 +26,7 @@ export const getVisitors = async ({
     department = "",
     status = "",
     visit_date = "",
-}) => {
+} = {}) => {
 
     const params = new URLSearchParams({
         page,
