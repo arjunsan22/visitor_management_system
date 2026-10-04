@@ -51,14 +51,14 @@ export const SecurityDashboardComponent = () => {
             NIT Calicut · Security Desk
           </div>
 
-          <div className="flex items-center gap-2.5">
+          {/* <div className="flex items-center gap-2.5">
             <span className="hidden font-tag text-[10px] tracking-widest text-gray-500 uppercase sm:inline">On Duty</span>
             <div className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A227]/30 bg-[#C9A227]/10 font-display text-sm font-semibold text-[#D9B84A]">
               {initials}
             </div>
             <div className="h-4 w-px bg-white/10 hidden sm:block"></div>
             <LogoutButton />
-          </div>
+          </div> */}
         </div>
 
         {/* Greeting */}

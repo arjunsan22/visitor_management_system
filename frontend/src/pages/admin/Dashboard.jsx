@@ -1,22 +1,18 @@
 import { Header } from "../../components/visitor/Header";
 import { DashboardComponent } from "../../components/admin/DashboardComponent";
 import { Footer } from "../../components/visitor/footer";
-
+import { Sidebar } from "../../components/admin/Sidebar";
 
 export const Dashboard = () => {
-
    return (
-      <div className="flex flex-col min-h-screen bbg-slate-100">
-  
+      <div className="flex flex-col min-h-screen bg-[#0A0E1A]">
         <Header />
-  
-        <main className="flex flex-1 w-full items-center justify-center px-4 sm:px-6 py-12">
-          <DashboardComponent />
-        </main>
-  
-        <Footer />
-  
+        <div className="flex flex-1 w-full overflow-hidden">
+          <Sidebar />
+          <main className="flex flex-1 w-full items-start justify-center px-4 sm:px-6 py-8 md:py-12 pb-24 md:pb-12 overflow-y-auto">
+            <DashboardComponent />
+          </main>
+        </div>
       </div>
     );
-  
 };

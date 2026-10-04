@@ -200,7 +200,7 @@ export const VisitorsComponent = () => {
 
   if (initialLoad) {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+      <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
         <div className="flex flex-col items-center gap-4">
@@ -215,7 +215,7 @@ export const VisitorsComponent = () => {
 
   if (error) {
     return (
-      <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
+      <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
         <div className="w-full max-w-sm rounded-2xl border border-red-500/20 bg-[#10162A] px-6 py-8 text-center">
