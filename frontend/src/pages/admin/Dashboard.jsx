@@ -1,6 +1,5 @@
 import { Header } from "../../components/visitor/Header";
 import { DashboardComponent } from "../../components/admin/DashboardComponent";
-import { Footer } from "../../components/visitor/footer";
 import { Sidebar } from "../../components/admin/Sidebar";
 
 export const Dashboard = () => {

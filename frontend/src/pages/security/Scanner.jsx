@@ -1,6 +1,6 @@
 import { Header } from "../../components/visitor/Header";
 import { ScannerComponent } from "../../components/security/ScannerComponent";
-import { Footer } from "../../components/visitor/footer";
+import { Footer } from "../../components/visitor/Footer";
 
 
 export const Scanner = () => {

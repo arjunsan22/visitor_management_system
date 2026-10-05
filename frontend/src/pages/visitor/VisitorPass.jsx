@@ -1,6 +1,6 @@
 import { Header } from "../../components/visitor/Header";
 import { VisitorPass as VisitorPassComponent } from "../../components/visitor/VisitorPass";
-import { Footer } from "../../components/visitor/footer";
+import { Footer } from "../../components/visitor/Footer";
 
 
 export const VisitorPass = () => {

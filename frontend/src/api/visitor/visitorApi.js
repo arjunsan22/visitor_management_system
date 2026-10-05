@@ -2,7 +2,7 @@
 export const createVisitor = async (visitorData) => {
 
     const response = await fetch(
-        "http://localhost:5000/api/visitors",
+        `${import.meta.env.VITE_API_URL}/api/visitors`,
         {
             method: "POST",
             headers: {
@@ -28,7 +28,7 @@ export const createVisitor = async (visitorData) => {
 export const getVisitorPass = async (token) => {
 
     const response = await fetch(
-        `http://localhost:5000/api/visitors/pass/${token}`
+        `${import.meta.env.VITE_API_URL}/api/visitors/pass/${token}`
     );
 
     const data = await response.json();
@@ -46,7 +46,7 @@ export const getVisitorPass = async (token) => {
 export const verifyVisitor = async (token) => {
 
     const response = await fetch(
-        `http://localhost:5000/api/visitors/${token}/verify`,
+        `${import.meta.env.VITE_API_URL}/api/visitors/${token}/verify`,
         {
             method: "PATCH",
             credentials: "include",
@@ -68,7 +68,7 @@ export const verifyVisitor = async (token) => {
 export const checkoutVisitor = async (token, check_out_at) => {
 
     const response = await fetch(
-        `http://localhost:5000/api/visitors/${token}/checkout`,
+        `${import.meta.env.VITE_API_URL}/api/visitors/${token}/checkout`,
         {
             method: "PATCH",
             credentials: "include",

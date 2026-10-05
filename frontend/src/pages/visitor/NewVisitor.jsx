@@ -1,6 +1,6 @@
 import { Header } from "../../components/visitor/Header";
 import { VisitorForm } from "../../components/visitor/VisitorForm";
-import { Footer } from "../../components/visitor/footer";
+import { Footer } from "../../components/visitor/Footer";
 
 
 export const NewVisitor = () => {

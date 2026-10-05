@@ -1,6 +1,5 @@
 import { Header } from "../../components/visitor/Header";
 import { VisitorsComponent } from "../../components/admin/VisitorsComponent";
-import { Footer } from "../../components/visitor/footer";
 import { Sidebar } from "../../components/admin/Sidebar";
 
 export const Visitors = () => {
@@ -13,7 +12,6 @@ export const Visitors = () => {
                 <VisitorsComponent />
               </main>
             </div>
-            <Footer />
           </div>
         );
 };

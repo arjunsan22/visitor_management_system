@@ -1,6 +1,6 @@
 import { Header } from "../../components/visitor/Header";
 import { SecurityDashboardComponent } from "../../components/security/SecurityDashboardComponent";
-import { Footer } from "../../components/visitor/footer";
+import { Footer } from "../../components/visitor/Footer";
 
 export const SecurityDashboard = () => {
         return (

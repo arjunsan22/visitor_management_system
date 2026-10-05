@@ -1,6 +1,6 @@
 import { Header } from "../../components/visitor/Header";
 import { HeroSection } from "../../components/visitor/HeroSection";
-import { Footer } from "../../components/visitor/footer";
+import { Footer } from "../../components/visitor/Footer";
 
 export const Home = () => {
     return (

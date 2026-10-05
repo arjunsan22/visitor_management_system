@@ -2,7 +2,7 @@
 export const login = async (email, password) => {
 
     const response = await fetch(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         {
             method: "POST",
             headers: {
@@ -32,7 +32,7 @@ export const login = async (email, password) => {
 export const getCurrentUser = async () => {
 
     const response = await fetch(
-        "http://localhost:5000/api/auth/me",
+        `${import.meta.env.VITE_API_URL}/api/auth/me`,
         {
             method: "GET",
             credentials: "include",
@@ -54,7 +54,7 @@ console.log('current user :',data.data)
 export const refreshAccessToken = async () => {
 
     const response = await fetch(
-        "http://localhost:5000/api/auth/refresh",
+        `${import.meta.env.VITE_API_URL}/api/auth/refresh`,
         {
             method: "POST",
             credentials: "include",
@@ -76,7 +76,7 @@ export const refreshAccessToken = async () => {
 export const logout = async () => {
 
     const response = await fetch(
-        "http://localhost:5000/api/auth/logout",
+        `${import.meta.env.VITE_API_URL}/api/auth/logout`,
         {
             method: "POST",
             credentials: "include",

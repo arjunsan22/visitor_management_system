@@ -7,10 +7,6 @@ const GlobalStyles = () => (
     @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
     .font-display { font-family: 'Space Grotesk', sans-serif; }
     .font-tag { font-family: 'JetBrains Mono', monospace; }
-    .hazard-strip {
-      background-image: repeating-linear-gradient(135deg, #C9A227 0 10px, transparent 10px 20px);
-      opacity: 0.45;
-    }
     .vms-field input,
     .vms-field select {
       width: 100%;
