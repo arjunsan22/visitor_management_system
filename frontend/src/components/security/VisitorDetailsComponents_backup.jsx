@@ -221,11 +221,11 @@ export const VisitorDetailsComponents = () => {
   const isVerified = Boolean(visitor.verified_by);
   const isCheckedOut = Boolean(visitor.check_out_at);
 
- const statusColor = isCheckedOut
-    ? { dot: "bg-red-500", text: "text-red-400", border: "border-red-500/30", bg: "bg-red-500/10" }
+  const statusColor = isPending
+    ? { dot: "bg-amber-400", text: "text-amber-300", border: "border-amber-400/30", bg: "bg-amber-400/10" }
     : isVerified
       ? { dot: "bg-emerald-400", text: "text-emerald-300", border: "border-emerald-400/30", bg: "bg-emerald-400/10" }
-      : { dot: "bg-amber-400", text: "text-amber-300", border: "border-amber-400/30", bg: "bg-amber-400/10" };
+      : { dot: "bg-[#D9B84A]", text: "text-[#D9B84A]", border: "border-[#C9A227]/30", bg: "bg-[#C9A227]/10" };
 
   const initials = visitor.name?.trim()?.charAt(0)?.toUpperCase() || "V";
 

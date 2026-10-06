@@ -4,6 +4,7 @@ import { createVisitor, findByPassToken, verifyVisitor, checkoutVisitor } from "
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
+import { sendVisitorPassEmail } from "../utils/sendEmail.js";
 
 export const createVisitorPass = asyncHandler(async (req, res) => {
   const {
@@ -30,6 +31,21 @@ export const createVisitorPass = asyncHandler(async (req, res) => {
     pass_token,
   });
 
+  // Send visitor pass email (fire-and-forget)
+  sendVisitorPassEmail({
+    name,
+    email,
+    phone,
+    purpose,
+    person_to_visit,
+    department,
+    visit_date,
+    check_in_time,
+    pass_token,
+  }).catch((err) => {
+    console.error("Failed to send visitor pass email:", err.message);
+  });
+
   return res.status(201).json(
     new ApiResponse(
       201,
@@ -37,7 +53,7 @@ export const createVisitorPass = asyncHandler(async (req, res) => {
         visitorId,
         pass_token,
       },
-      "Visitor pass created successfully",
+      "Visitor pass created successfully. Pass details have been sent to your email.",
     ),
   );
 });

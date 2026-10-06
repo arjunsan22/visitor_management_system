@@ -155,6 +155,16 @@ export const VisitorPass = () => {
     );
   }
 
+  const isPending = visitor.status === "Pending";
+  const isVerified = Boolean(visitor.verified_by);
+  const isCheckedOut = Boolean(visitor.check_out_at);
+
+  const statusColor = isCheckedOut
+    ? { dot: "bg-red-500", text: "text-red-400", border: "border-red-500/30", bg: "bg-red-500/10" }
+    : isVerified
+      ? { dot: "bg-emerald-400", text: "text-emerald-300", border: "border-emerald-400/30", bg: "bg-emerald-400/10" }
+      : { dot: "bg-amber-400", text: "text-amber-300", border: "border-amber-400/30", bg: "bg-amber-400/10" };
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#0A0E1A] px-4 py-10 sm:py-14">
 
@@ -189,9 +199,38 @@ export const VisitorPass = () => {
                   Visitor
                 </p>
 
-                <h2 className="mt-1.5 font-display text-xl font-semibold text-white">
-                  {visitor.name}
-                </h2>
+                <div className="mt-1.5 flex items-center gap-2">
+                  <h2 className="font-display text-xl font-semibold text-white">
+                    {visitor.name}
+                  </h2>
+                  {isVerified && !isCheckedOut && (
+                    <svg
+                      className="h-5 w-5 shrink-0"
+                      viewBox="0 0 22 22"
+                      fill="none"
+                      role="img"
+                      aria-label="Verified visitor"
+                    >
+                      <title>Verified</title>
+                      <path
+                        d="M11 1.5l2.35 1.24 2.6-.47 1.24 2.35 2.35 1.24-.47 2.6 1.24 2.35-1.24 2.35.47 2.6-2.35 1.24-1.24 2.35-2.6-.47L11 20.5l-2.35-1.24-2.6.47-1.24-2.35-2.35-1.24.47-2.6L1.5 11l1.24-2.35-.47-2.6 2.35-1.24 1.24-2.35 2.6.47L11 1.5z"
+                        fill="#3B82F6"
+                      />
+                      <path
+                        d="M7.2 11.2l2.4 2.4 5.2-5.2"
+                        stroke="white"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  )}
+                  {isCheckedOut && (
+                    <span className="shrink-0 rounded-sm bg-red-500/10 border border-red-500/30 px-2 py-0.5 font-tag text-[10px] font-semibold tracking-widest text-red-400 uppercase">
+                      Checked Out
+                    </span>
+                  )}
+                </div>
               </div>
 
               <div className="rounded-sm border border-[#C9A227]/30 bg-[#C9A227]/10 px-3 py-1">
@@ -335,9 +374,9 @@ export const VisitorPass = () => {
                 Current Status
               </p>
 
-              <div className="mt-2.5 inline-flex items-center gap-2 rounded-sm border border-[#C9A227]/30 bg-[#C9A227]/10 px-4 py-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#D9B84A]"></span>
-                <span className="font-tag text-xs font-semibold tracking-widest text-[#D9B84A] uppercase">
+              <div className={`mt-2.5 inline-flex items-center gap-2 rounded-sm border ${statusColor.border} ${statusColor.bg} px-4 py-2`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${statusColor.dot}`}></span>
+                <span className={`font-tag text-xs font-semibold tracking-widest ${statusColor.text} uppercase`}>
                   {visitor.status}
                 </span>
               </div>

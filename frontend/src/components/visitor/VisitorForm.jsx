@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { visitorSchema } from "../../schemas/visitorSchema.js";
 import { createVisitor } from "../../api/visitor/visitorApi.js";
-import { useNavigate } from "react-router-dom";
 
 export const VisitorForm = () => {
 
@@ -17,7 +16,9 @@ export const VisitorForm = () => {
     });
 
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState("");
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -48,24 +49,14 @@ export const VisitorForm = () => {
         }
 
         setErrors({});
+        setSubmitLoading(true);
+        setSubmitError("");
 
         try {
 
-            const data = await createVisitor(result.data);
+            await createVisitor(result.data);
 
-            const passToken = data.data.pass_token;
-
-            localStorage.setItem(
-                "visitorPassToken",
-                passToken
-            );
-
-            console.log(
-                "Visitor created successfully:",
-                data
-            );
-
-            navigate(`/pass/${passToken}`);
+            setSubmitSuccess(true);
 
         } catch (error) {
 
@@ -74,6 +65,12 @@ export const VisitorForm = () => {
                 error
             );
 
+            setSubmitError(
+                error.message || "Failed to create visitor pass"
+            );
+
+        } finally {
+            setSubmitLoading(false);
         }
     };
 
@@ -150,6 +147,70 @@ export const VisitorForm = () => {
             <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:3rem_3rem] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_30%,#000_60%,transparent_100%)]"></div>
 
+            {/* Success State */}
+            {submitSuccess ? (
+                <div className="relative z-10 w-full max-w-lg rounded-2xl bg-[#10162A] border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.45)] px-6 py-12 sm:px-10 text-center">
+
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10">
+                        <svg className="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </div>
+
+                    <h2 className="font-display mt-6 text-2xl font-semibold text-white">
+                        Visitor Pass Created
+                    </h2>
+
+                    <div className="mt-5 space-y-2.5">
+                        <p className="text-sm text-gray-300">
+                            Your visitor pass has been sent to your email.
+                        </p>
+                        <p className="text-sm text-gray-400">
+                            Please check your email for the QR code and pass details.
+                        </p>
+                        <p className="text-xs text-gray-500">
+                            Present the QR code or pass token at the security gate upon arrival.
+                        </p>
+                    </div>
+
+                    <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#C9A227]/20 bg-[#C9A227]/[0.06] px-4 py-2.5">
+                        <svg className="h-4 w-4 text-[#D9B84A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span className="font-tag text-[10px] tracking-widest text-[#D9B84A] uppercase">
+                            Check your inbox
+                        </span>
+                    </div>
+
+                    <div className="mt-8">
+                        <button
+                            onClick={() => {
+                                setSubmitSuccess(false);
+                                setFormData({
+                                    name: "",
+                                    email: "",
+                                    phone: "",
+                                    purpose: "",
+                                    person_to_visit: "",
+                                    department: "",
+                                    visit_date: "",
+                                    check_in_time: "",
+                                });
+                            }}
+                            className="corner-mark group inline-flex items-center gap-3 border-l-2 border-[#C9A227] bg-white/[0.03] px-6 py-3.5 transition-colors duration-200 hover:bg-white/[0.06] cursor-pointer"
+                        >
+                            <span className="font-display text-sm font-semibold text-white tracking-wide">
+                                Register Another Visitor
+                            </span>
+                            <svg className="h-4 w-4 text-[#D9B84A] transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            ) : (
+
             <div className="relative z-10 w-full max-w-3xl rounded-2xl bg-[#10162A] border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.45)]">
 
                 {/* Header meta bar */}
@@ -172,7 +233,7 @@ export const VisitorForm = () => {
                         <span className="block h-[3px] w-12 bg-[#C9A227] mt-3 rounded-full"></span>
                     </h2>
                     <p className="mt-3 text-sm text-gray-400 max-w-md">
-                        Provide accurate details for gate clearance and record verification.
+                        Provide accurate details for gate clearance and record verification. Your visitor pass will be sent to your email.
                     </p>
                 </div>
 
@@ -394,26 +455,38 @@ export const VisitorForm = () => {
 
                     </div>
 
+                    {/* Submit Error */}
+                    {submitError && (
+                        <div className="mt-5 rounded-lg border border-red-500/20 bg-red-500/[0.06] px-4 py-3">
+                            <p className="text-sm text-red-400">{submitError}</p>
+                        </div>
+                    )}
+
                     <div className="mt-9 flex items-center justify-between gap-4 border-t border-dashed border-white/10 pt-6">
                         <span className="font-tag text-[10px] tracking-widest text-gray-500 uppercase hidden sm:inline">
-                            Verified On Submission
+                            Pass sent via email
                         </span>
 
                         <button
                             type="submit"
-                            className="corner-mark group inline-flex items-center gap-3 border-l-2 border-[#C9A227] bg-white/[0.03] px-6 py-3.5 transition-colors duration-200 hover:bg-white/[0.06] ml-auto sm:ml-0 cursor-pointer"
+                            disabled={submitLoading}
+                            className="corner-mark group inline-flex items-center gap-3 border-l-2 border-[#C9A227] bg-white/[0.03] px-6 py-3.5 transition-colors duration-200 hover:bg-white/[0.06] ml-auto sm:ml-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <span className="font-display text-sm font-semibold text-white tracking-wide">
-                                Submit
+                                {submitLoading ? "Submitting..." : "Submit"}
                             </span>
-                            <svg className="h-4 w-4 text-[#D9B84A] transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                            </svg>
+                            {!submitLoading && (
+                                <svg className="h-4 w-4 text-[#D9B84A] transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+                                </svg>
+                            )}
                         </button>
                     </div>
 
                 </form>
             </div>
+
+            )}
         </section>
     );
 };

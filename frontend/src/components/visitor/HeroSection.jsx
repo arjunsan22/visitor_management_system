@@ -1,8 +1,4 @@
-import { useState, useEffect } from "react";
-import { getVisitorPass } from '../../api/visitor/visitorApi';
-import { validateVisitorPass } from '../../utils/passValidation';
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import {AccessPassCard} from "../common/AccessPassCard"
 
 /* Dark navy background with a faint grid (same as the login page) */
@@ -17,45 +13,6 @@ const gridBackground = {
 };
 
 export const HeroSection = () => {
-
-    const navigate = useNavigate();
-    const [visitorPass, setVisitorPass] = useState(null);
-    
-    useEffect(() => {
-
-        const token = localStorage.getItem(
-            "visitorPassToken"
-        );
-
-        if (!token) {
-            return;
-        }
-
-        const fetchVisitorPass = async () => {
-
-            try {
-
-                const data = await getVisitorPass(token);
-
-                setVisitorPass(data.data);
-
-            } catch (error) {
-
-                console.error(
-                    "Failed to fetch visitor pass:",
-                    error
-                );
-
-                setVisitorPass(null);
-            }
-
-        };
-
-        fetchVisitorPass();
-
-    }, []);
-
-    const canShowPass = validateVisitorPass(visitorPass);
 
     return (
         <section
@@ -90,7 +47,7 @@ export const HeroSection = () => {
                         </h1>
 
                         <p className="mt-4 text-sm leading-relaxed text-neutral-400 sm:text-base">
-                            Get your campus entry pass in a few steps. Register as a new visitor and show your pass at the gate.
+                            Get your campus entry pass in a few steps. Register as a new visitor and your pass will be sent to your email.
                         </p>
 
                         {/* Actions */}
@@ -111,36 +68,6 @@ export const HeroSection = () => {
                                 </svg>
                             </Link>
 
-                            {canShowPass && (
-                                <button
-                                    onClick={() => {
-                                        const token = localStorage.getItem("visitorPassToken");
-                                        if (token) {
-                                            navigate(`/pass/${token}`);
-                                        }
-                                    }}
-                                    className="group flex items-center justify-between gap-4 rounded-lg border border-emerald-500/40 bg-emerald-500/[0.06] px-5 py-4 text-left transition hover:border-emerald-400/60 hover:bg-emerald-500/[0.12] focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 cursor-pointer"
-                                >
-                                    <span className="flex items-center gap-3">
-                                        <span className="relative flex h-5 w-5 items-center justify-center text-emerald-400">
-                                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
-                                            </svg>
-                                            <span className="absolute -right-1 -top-1 flex h-2 w-2">
-                                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                                                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                                            </span>
-                                        </span>
-                                        <span>
-                                            <span className="block text-sm font-semibold text-emerald-100">Show pass</span>
-                                            <span className="block text-xs text-emerald-300/70">Your active pass is ready</span>
-                                        </span>
-                                    </span>
-                                    <svg className="h-4 w-4 text-emerald-400/70 transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
-                            )}
                         </div>
 
                         {/* Security guard link */}
