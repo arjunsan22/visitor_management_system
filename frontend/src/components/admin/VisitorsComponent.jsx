@@ -1,3 +1,4 @@
+import { ReusableSpinner } from "../common/ReusableSpinner";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { getVisitors } from "../../api/admin/adminApi";
@@ -189,7 +190,7 @@ export const VisitorsComponent = () => {
       return "border-emerald-400/30 bg-emerald-400/10 text-emerald-300";
     }
     if (value === "Checked Out") {
-      return "border-sky-400/30 bg-sky-400/10 text-sky-300";
+      return "border-sky-400/30 bg-black-400/10 text-red-400";
     }
     return "border-[#C9A227]/30 bg-[#C9A227]/10 text-[#D9B84A]";
   };
@@ -199,12 +200,7 @@ export const VisitorsComponent = () => {
       <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
-        <div className="flex flex-col items-center gap-4">
-          <div className="spin-slow h-9 w-9 rounded-full border-2 border-white/10 border-t-[#C9A227]"></div>
-          <span className="font-tag text-xs tracking-widest text-gray-500 uppercase">
-            Loading visitors...
-          </span>
-        </div>
+        <ReusableSpinner text="Loading visitors..." />
       </div>
     );
   }
@@ -306,9 +302,9 @@ export const VisitorsComponent = () => {
         </div>
 
         {/* Desktop table */}
-        <div className="hidden overflow-hidden rounded-2xl border border-white/[0.08] bg-[#10162A] lg:block">
+        <div className="hidden overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#10162A] lg:block">
 
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[900px]">
 
             <thead className="border-b border-white/[0.07]">
               <tr>
@@ -374,8 +370,8 @@ export const VisitorsComponent = () => {
                       {visitor.status}
                     </span>
                     {visitor.status === 'Checked Out' && (
-                        <span className="ml-2 text-xs text-gray-500">
-                          {visitor.check_out_at}
+                        <span className="ml-2 text-xs text-white/[0.9]">
+                         Time: {visitor.check_out_at}
                         </span>
                       )}
                       

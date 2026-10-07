@@ -1,3 +1,4 @@
+import { ReusableSpinner } from "../common/ReusableSpinner";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
@@ -112,12 +113,7 @@ export const VisitorPass = () => {
       <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
-        <div className="flex flex-col items-center gap-4">
-          <div className="spin-slow h-9 w-9 rounded-full border-2 border-white/10 border-t-[#C9A227]"></div>
-          <span className="font-tag text-xs tracking-widest text-gray-500 uppercase">
-            Loading visitor pass...
-          </span>
-        </div>
+        <ReusableSpinner text="Loading visitor pass..." />
       </div>
     );
   }

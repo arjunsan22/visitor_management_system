@@ -1,3 +1,4 @@
+import { ReusableSpinner } from "../common/ReusableSpinner";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { getDashboardStats } from "../../api/admin/adminApi";
@@ -194,19 +195,7 @@ export const DashboardComponent = () => {
                 {/* Stat cards */}
                 {!stats ? (
 
-                    // Skeleton loading state
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
-                        {[0, 1, 2, 3].map((i) => (
-                            <div
-                                key={i}
-                                className="skeleton-pulse rounded-2xl border border-white/[0.07] bg-[#10162A] px-5 py-6"
-                            >
-                                <div className="h-10 w-10 rounded-xl bg-white/[0.05]"></div>
-                                <div className="mt-6 h-7 w-16 rounded bg-white/[0.06]"></div>
-                                <div className="mt-2 h-3 w-24 rounded bg-white/[0.04]"></div>
-                            </div>
-                        ))}
-                    </div>
+                    <ReusableSpinner />
 
                 ) : (
 

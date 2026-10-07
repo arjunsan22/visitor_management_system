@@ -1,3 +1,4 @@
+import { ReusableSpinner } from "../common/ReusableSpinner";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { getAllSecurity, createSecurity, updateSecurity, deleteSecurity } from "../../api/admin/adminApi";
@@ -179,12 +180,7 @@ export const SecurityManagementComponent = () => {
       <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#0A0E1A] px-4">
         <GlobalStyles />
         <div className="hazard-strip absolute top-0 inset-x-0 h-[3px]"></div>
-        <div className="flex flex-col items-center gap-4">
-          <div className="spin-slow h-9 w-9 rounded-full border-2 border-white/10 border-t-[#C9A227]"></div>
-          <span className="font-tag text-xs tracking-widest text-gray-500 uppercase">
-            Loading security personnel...
-          </span>
-        </div>
+        <ReusableSpinner text="Loading security personnel..." />
       </div>
     );
   }
@@ -255,9 +251,9 @@ export const SecurityManagementComponent = () => {
         </div>
 
         {/* Desktop table */}
-        <div className="hidden overflow-hidden rounded-2xl border border-white/[0.08] bg-[#10162A] lg:block">
+        <div className="hidden overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#10162A] lg:block">
 
-          <table className="w-full text-left">
+          <table className="w-full text-left min-w-[900px]">
 
             <thead className="border-b border-white/[0.07]">
               <tr>

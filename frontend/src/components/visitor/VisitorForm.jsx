@@ -1,3 +1,5 @@
+import { MailSuccessMessageComponent } from "../common/MailSuccessMessageComponent";
+import { ReusableSpinner } from "../common/ReusableSpinner";
 import { useState } from "react";
 import { visitorSchema } from "../../schemas/visitorSchema.js";
 import { createVisitor } from "../../api/visitor/visitorApi.js";
@@ -149,66 +151,21 @@ export const VisitorForm = () => {
 
             {/* Success State */}
             {submitSuccess ? (
-                <div className="relative z-10 w-full max-w-lg rounded-2xl bg-[#10162A] border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.45)] px-6 py-12 sm:px-10 text-center">
-
-                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-emerald-400/30 bg-emerald-400/10">
-                        <svg className="h-8 w-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                    </div>
-
-                    <h2 className="font-display mt-6 text-2xl font-semibold text-white">
-                        Visitor Pass Created
-                    </h2>
-
-                    <div className="mt-5 space-y-2.5">
-                        <p className="text-sm text-gray-300">
-                            Your visitor pass has been sent to your email.
-                        </p>
-                        <p className="text-sm text-gray-400">
-                            Please check your email for the QR code and pass details.
-                        </p>
-                        <p className="text-xs text-gray-500">
-                            Present the QR code or pass token at the security gate upon arrival.
-                        </p>
-                    </div>
-
-                    <div className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#C9A227]/20 bg-[#C9A227]/[0.06] px-4 py-2.5">
-                        <svg className="h-4 w-4 text-[#D9B84A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        <span className="font-tag text-[10px] tracking-widest text-[#D9B84A] uppercase">
-                            Check your inbox
-                        </span>
-                    </div>
-
-                    <div className="mt-8">
-                        <button
-                            onClick={() => {
-                                setSubmitSuccess(false);
-                                setFormData({
-                                    name: "",
-                                    email: "",
-                                    phone: "",
-                                    purpose: "",
-                                    person_to_visit: "",
-                                    department: "",
-                                    visit_date: "",
-                                    check_in_time: "",
-                                });
-                            }}
-                            className="corner-mark group inline-flex items-center gap-3 border-l-2 border-[#C9A227] bg-white/[0.03] px-6 py-3.5 transition-colors duration-200 hover:bg-white/[0.06] cursor-pointer"
-                        >
-                            <span className="font-display text-sm font-semibold text-white tracking-wide">
-                                Register Another Visitor
-                            </span>
-                            <svg className="h-4 w-4 text-[#D9B84A] transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
-                            </svg>
-                        </button>
-                    </div>
-
-                </div>
+                <MailSuccessMessageComponent 
+                    onReset={() => {
+                        setSubmitSuccess(false);
+                        setFormData({
+                            name: "",
+                            email: "",
+                            phone: "",
+                            purpose: "",
+                            person_to_visit: "",
+                            department: "",
+                            visit_date: "",
+                            check_in_time: "",
+                        });
+                    }} 
+                />
             ) : (
 
             <div className="relative z-10 w-full max-w-3xl rounded-2xl bg-[#10162A] border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.45)]">
@@ -473,7 +430,7 @@ export const VisitorForm = () => {
                             className="corner-mark group inline-flex items-center gap-3 border-l-2 border-[#C9A227] bg-white/[0.03] px-6 py-3.5 transition-colors duration-200 hover:bg-white/[0.06] ml-auto sm:ml-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <span className="font-display text-sm font-semibold text-white tracking-wide">
-                                {submitLoading ? "Submitting..." : "Submit"}
+                                {submitLoading ? <ReusableSpinner inline text="Submitting..." /> : "Submit"}
                             </span>
                             {!submitLoading && (
                                 <svg className="h-4 w-4 text-[#D9B84A] transition-transform duration-200 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

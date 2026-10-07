@@ -28,7 +28,7 @@ export const validateVisitorPass = (visitorPass) => {
         const [checkoutHours, checkoutMinutes] = visitorPass.check_out_at.split(':').map(Number);
         
         // If the current time has passed the checkout time
-        if (currentHours > checkoutHours || (currentHours === checkoutHours && currentMinutes >= checkoutMinutes)) {
+        if (currentHours > checkoutHours || (currentHours === checkoutHours && currentMinutes >= checkoutMinutes)) { //11 === 10 && 14 >= 10
             return false; // Expired because current time passed checkout time
         }
     }
