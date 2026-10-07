@@ -49,3 +49,11 @@ export const securityOnly = (req, res, next) => {
 
   next();
 };
+
+export const adminOrSecurity = (req, res, next) => {
+  if (req.user.role !== "admin" && req.user.role !== "security") {
+    throw new ApiError(403, "Access denied");
+  }
+
+  next();
+};

@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 import { LogoutButton } from "../common/LogoutButton";
+import { VisitorsTableModalForSecurity } from "../common/VisitorsTableModalForSecurity";
 
 export const SecurityDashboardComponent = () => {
 
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [isVisitorsModalOpen, setIsVisitorsModalOpen] = useState(false);
 
   const initials = user?.name?.trim()?.charAt(0)?.toUpperCase() || "S";
 
@@ -75,32 +78,34 @@ export const SecurityDashboardComponent = () => {
               </span>
             </button>
 
-            {/* Capture Visitor Photo — disabled, future update */}
-            <div
-              aria-disabled="true"
-              className="tile-in-2 relative flex cursor-not-allowed select-none flex-col items-start overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.015] p-6 opacity-70"
+            {/* Today's Visitors — active */}
+            <button
+              type="button"
+              onClick={() => setIsVisitorsModalOpen(true)}
+              className="tile-in-2 group relative flex flex-col items-start overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A227]/40 hover:bg-white/[0.045] hover:shadow-[0_20px_45px_-15px_rgba(201,162,39,0.35)] cursor-pointer"
             >
-              <span className="absolute right-5 top-5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-medium uppercase tracking-wide text-gray-400">
-                Soon
-              </span>
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/[0.04] text-gray-500">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#C9A227]/15 text-[#D9B84A] transition-colors group-hover:bg-[#C9A227]/25">
                 <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M3 9a2 2 0 012-2h1.5l1-1.5h5l1 1.5H16a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                  <circle cx="12" cy="13" r="3" strokeWidth="1.6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.6" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
 
-              <h2 className="mt-5 text-lg font-semibold text-gray-400">Capture Visitor Photo</h2>
+              <div className="mt-5 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-white">Today's Visitors</h2>
+                <span className="rounded-full bg-[#C9A227]/15 px-2 py-0.5 text-[10px] font-medium text-[#D9B84A]">Active</span>
+              </div>
 
-              <p className="mt-1.5 text-sm leading-relaxed text-gray-600">
-                Attach a live photo of the visitor to their ID record.
+              <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
+                View all scheduled and registered visitors for today.
               </p>
 
-              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-gray-600">
-                Not yet available
+              <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-[#D9B84A]">
+                View visitors list
+                <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M9 5l7 7-7 7" />
+                </svg>
               </span>
-            </div>
+            </button>
 
           </div>
 
@@ -138,6 +143,12 @@ export const SecurityDashboardComponent = () => {
 
         </div>
       </div>
+
+      {/* Today's Visitors Modal */}
+      <VisitorsTableModalForSecurity
+        isOpen={isVisitorsModalOpen}
+        onClose={() => setIsVisitorsModalOpen(false)}
+      />
 
     </div>
   );
