@@ -54,7 +54,7 @@ export const Sidebar = () => {
       
       {/* Desktop Sidebar */}
       <aside 
-        className={`hidden md:flex flex-col border-r border-white/10 bg-[#0A0E1A] shrink-0 transition-all duration-300 ease-in-out relative ${
+        className={`hidden md:flex flex-col border-r border-white/10 bg-[#0A0E1A] h-full sticky top-0 shrink-0 transition-all duration-300 ease-in-out relative ${
           isExpanded ? 'w-64' : 'w-20'
         }`}
       >

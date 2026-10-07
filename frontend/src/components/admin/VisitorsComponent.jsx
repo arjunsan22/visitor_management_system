@@ -302,9 +302,9 @@ export const VisitorsComponent = () => {
         </div>
 
         {/* Desktop table */}
-        <div className="hidden overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#10162A] lg:block">
+        <div className="hidden w-full overflow-x-auto rounded-2xl border border-white/[0.08] bg-[#10162A] lg:block max-w-full">
 
-          <table className="w-full text-left min-w-[900px]">
+          <table className="w-full text-left min-w-[1000px]">
 
             <thead className="border-b border-white/[0.07]">
               <tr>

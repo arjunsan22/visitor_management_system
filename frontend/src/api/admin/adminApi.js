@@ -1,11 +1,10 @@
+import { authFetch } from "../apiClient";
 
 export const getDashboardStats = async () => {
-
-    const response = await fetch(
+    const response = await authFetch(
         `${import.meta.env.VITE_API_URL}/api/admin/dashboard`,
         {
             method: "GET",
-            credentials: "include",
         }
     );
 
@@ -18,7 +17,6 @@ export const getDashboardStats = async () => {
     return data;
 };
 
-
 export const getVisitors = async ({
     page = 1,
     limit = 10,
@@ -27,7 +25,6 @@ export const getVisitors = async ({
     status = "",
     visit_date = "",
 } = {}) => {
-
     const params = new URLSearchParams({
         page,
         limit,
@@ -37,11 +34,10 @@ export const getVisitors = async ({
         visit_date,
     });
 
-    const response = await fetch(
+    const response = await authFetch(
         `${import.meta.env.VITE_API_URL}/api/admin/visitors?${params.toString()}`,
         {
             method: "GET",
-            credentials: "include",
         }
     );
 
@@ -59,12 +55,10 @@ export const getVisitors = async ({
 ////\\\\ Security Management API ////\\\\
 
 export const getAllSecurity = async () => {
-
-    const response = await fetch(
+    const response = await authFetch(
         `${import.meta.env.VITE_API_URL}/api/admin/security`,
         {
             method: "GET",
-            credentials: "include",
         }
     );
 
@@ -85,12 +79,10 @@ export const createSecurity = async ({
     phone,
     password,
 }) => {
-
-    const response = await fetch(
+    const response = await authFetch(
         `${import.meta.env.VITE_API_URL}/api/admin/security`,
         {
             method: "POST",
-            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -119,12 +111,10 @@ export const updateSecurity = async (id, {
     email,
     phone,
 }) => {
-
-    const response = await fetch(
+    const response = await authFetch(
         `${import.meta.env.VITE_API_URL}/api/admin/security/${id}`,
         {
             method: "PUT",
-            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -148,12 +138,10 @@ export const updateSecurity = async (id, {
 };
 
 export const deleteSecurity = async (id) => {
-
-    const response = await fetch(
+    const response = await authFetch(
         `${import.meta.env.VITE_API_URL}/api/admin/security/${id}`,
         {
             method: "DELETE",
-            credentials: "include",
         }
     );
 

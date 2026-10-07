@@ -5,7 +5,7 @@ export const accessCookieOptions = {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? "none":"lax",
-    maxAge: 15 * 60 * 1000,
+    maxAge: 1 * 60 * 60 * 1000, // 1 hour
 };
 
 export const refreshCookieOptions = {

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import { createVisitor, findByPassToken, verifyVisitor, checkoutVisitor } from "../models/Visitor.js";
+import { createVisitor, findByPassToken, verifyVisitor, checkoutVisitor ,updateVisitorImage} from "../models/Visitor.js";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -83,6 +83,7 @@ export const getVisitorPass = asyncHandler(async (req, res) => {
             verified_by: visitor.verified_by_name,
             verified_at: visitor.verified_at,
             check_out_at: visitor.check_out_at,
+            image: visitor.image,
         },
         "Visitor pass fetched successfully"
     )
@@ -152,4 +153,38 @@ export const checkoutVisitorPass = asyncHandler(async (req, res) => {
         )
     );
 
+});
+
+export const uploadVisitorImage = asyncHandler(async (req, res) => {
+    const { token } = req.params;
+
+    if (!req.file) {
+        throw new ApiError(400, "Please upload an image file");
+    }
+
+    const visitor = await findByPassToken(token);
+    
+    if (!visitor) {
+        throw new ApiError(404, "Visitor not found");
+    }
+
+    // Only allow uploading if pending or verified, but not checked out
+    if (visitor.status === 'Checked Out') {
+        throw new ApiError(400, "Cannot add image to a checked-out visitor");
+    }
+
+    // The file path to store in DB
+    const imagePath = `/uploads/visitors/${req.file.filename}`;
+
+    // Update in DB (we need to import updateVisitorImage)
+
+    await updateVisitorImage(token, imagePath);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            { image: imagePath },
+            "Visitor image uploaded successfully"
+        )
+    );
 });

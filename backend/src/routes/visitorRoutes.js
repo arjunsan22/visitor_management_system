@@ -1,9 +1,9 @@
 import express from "express";
 import validate from "../middleware/validate.js";
-
+import { upload } from "../utils/upload.js";
 import { visitorSchema } from "../schemas/visitorSchema.js";
 import { checkoutSchema } from "../schemas/checkoutSchema.js";
-import { createVisitorPass,getVisitorPass,verifyVisitorPass,checkoutVisitorPass } from "../controllers/visitorController.js";
+import { createVisitorPass,getVisitorPass,verifyVisitorPass,checkoutVisitorPass ,uploadVisitorImage} from "../controllers/visitorController.js";
 import { protect,securityOnly } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -28,6 +28,14 @@ router.patch("/:token/checkout",
     securityOnly,
     validate(checkoutSchema),
     checkoutVisitorPass
+);
+
+
+router.post("/:token/image",
+    protect,
+    securityOnly,
+    upload.single('image'),
+    uploadVisitorImage
 );
 
 export default router;

@@ -93,6 +93,17 @@ export const checkoutVisitor = async ( pass_token,check_out_at ) => {
     return result;
 };
 
+////////update image/////////////////////////
+export const updateVisitorImage = async (pass_token, imagePath) => {
+    const [result] = await pool.execute(
+        `UPDATE visitors
+         SET image = ?
+         WHERE pass_token = ?`,
+        [imagePath, pass_token]
+    );
+    return result;
+};
+
 ///filtering , limit, sorting, pagination ///////
 
 export const getVisitors = async ({

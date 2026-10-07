@@ -1,6 +1,9 @@
 import { ReusableSpinner } from "../common/ReusableSpinner";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
+import { QRCodeCanvas } from "qrcode.react";
+import { ImageCropModal } from "./ImageCropModal";
+import { generateAndDownloadIdCard } from "../../utils/idCardGenerator.js";
 
 import { getVisitorPass, verifyVisitor, checkoutVisitor } from "../../api/visitor/visitorApi.js";
 import { Toast } from "../common/Toast.jsx";
@@ -15,6 +18,45 @@ export const VisitorDetailsComponents = () => {
   const [checkOutAt, setCheckOutAt] = useState("");
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [toast, setToast] = useState({ message: "", type: "success" });
+
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false);
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const fileInputRef = useRef(null);
+
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+        showToast("Only JPG and PNG images are allowed.", "error");
+        return;
+      }
+      setSelectedImageFile(file);
+      setIsCropModalOpen(true);
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleUploadSuccess = (newImagePath) => {
+    setVisitor((prev) => ({
+      ...prev,
+      image: newImagePath,
+    }));
+    setIsCropModalOpen(false);
+    setSelectedImageFile(null);
+  };
+
+  const handleDownloadIdCard = async () => {
+    if (!visitor) return;
+    try {
+      showToast("Generating ID Card...", "success");
+      const qrCanvas = document.getElementById("visitor-pass-qr-canvas");
+      await generateAndDownloadIdCard(visitor, qrCanvas);
+      showToast("ID Card downloaded successfully!", "success");
+    } catch (err) {
+      console.error("Failed to download ID card:", err);
+      showToast(err.message || "Failed to generate ID card", "error");
+    }
+  };
 
   const showToast = (message, type = "success") => {
     setToast({ message, type });
@@ -103,10 +145,7 @@ export const VisitorDetailsComponents = () => {
         checkOutAt
       );
 
-      console.log(
-        "Visitor checked out successfully:",
-        data
-      );
+      
       
       showToast("Visitor checked out successfully!", "success");
 
@@ -265,8 +304,40 @@ export const VisitorDetailsComponents = () => {
 
             <div className="flex items-start gap-4">
 
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] font-display text-base font-semibold text-gray-300">
-                {initials}
+              <div className="relative group shrink-0">
+                <input
+                  type="file"
+                  accept="image/jpeg, image/png, image/jpg"
+                  ref={fileInputRef}
+                  className="hidden"
+                  onChange={handleImageSelect}
+                  disabled={isCheckedOut}
+                />
+                <div 
+                  className={`flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] font-display text-base font-semibold text-gray-300 overflow-hidden ${!isCheckedOut ? 'cursor-pointer hover:bg-white/10' : ''}`}
+                  onClick={() => !isCheckedOut && fileInputRef.current?.click()}
+                  title={!isCheckedOut ? "Click to upload image" : "Image upload disabled (Checked Out)"}
+                >
+                  {visitor.image ? (
+                    <img 
+                      src={`${import.meta.env.VITE_API_URL || "http://localhost:5000"}${visitor.image}`} 
+                      alt={visitor.name} 
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    initials
+                  )}
+                </div>
+                {!isCheckedOut && !visitor.image && (
+                  <div 
+                    className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 border border-[#141B31] cursor-pointer"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                     <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 4v16m8-8H4" />
+                     </svg>
+                  </div>
+                )}
               </div>
 
               <div className="min-w-0 flex-1">
@@ -278,8 +349,8 @@ export const VisitorDetailsComponents = () => {
                   <h2 className="font-display truncate text-xl font-semibold text-white sm:text-2xl">
                     {visitor.name}
                   </h2>
-                  
-                  {isVerified && (
+                 
+                  {isVerified && !isCheckedOut && (
                     <svg
                       className="h-5 w-5 shrink-0 sm:h-[22px] sm:w-[22px]"
                       viewBox="0 0 22 22"
@@ -482,6 +553,20 @@ export const VisitorDetailsComponents = () => {
 
           </div>
 
+          {/* ID Card Download Action */}
+          <div className="border-t border-white/[0.07] px-6 py-4 flex justify-end">
+             <button
+                type="button"
+                onClick={handleDownloadIdCard}
+                className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/20"
+             >
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download ID Card
+             </button>
+          </div>
+
           {/* Action */}
           {isPending && (
             <div className="border-t border-white/[0.07] px-6 py-5">
@@ -541,6 +626,29 @@ export const VisitorDetailsComponents = () => {
         </div>
 
       </div>
+
+      {/* Hidden QR Code Canvas used for ID Card Generation */}
+      <div style={{ position: "fixed", left: "-9999px", top: "0px", opacity: 0, pointerEvents: "none" }}>
+        <QRCodeCanvas
+          id="visitor-pass-qr-canvas"
+          value={visitor?.pass_token ? `${window.location.origin}/pass/${visitor.pass_token}` : window.location.href}
+          size={140}
+          level="M"
+          includeMargin={false}
+        />
+      </div>
+      
+      <ImageCropModal
+        isOpen={isCropModalOpen}
+        onClose={() => {
+          setIsCropModalOpen(false);
+          setSelectedImageFile(null);
+        }}
+        imageFile={selectedImageFile}
+        token={token}
+        onSuccess={handleUploadSuccess}
+        showToast={showToast}
+      />
 
     </div>
   );
